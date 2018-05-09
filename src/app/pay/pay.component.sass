@@ -1,0 +1,81 @@
+.pay-page-holder__content
+	display: inline-block
+	.utility-holder
+		text-align: center
+		background-color: #fff
+		padding: 20px 30px
+		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)
+	  transition: 0.3s
+	  overflow: hidden
+		&:hover
+			transition: all 0.4s ease
+			transform: scale(1.03)
+			background-color: lighten(#719DCA,15%)
+			h3,p,h5
+				transition: all 0.4s ease
+				color: #fff !important
+			.confirmation-holder
+				span
+					transition: all 0.4s ease
+					color: #fff !important
+
+
+		h3
+			text-align: left
+			font-size: 35px
+			margin-bottom: 25px
+			padding-bottom: 10px
+			color: darken(#D7DADC,20%)
+			border-bottom: 1px solid #719DCA
+		h5
+			color: darken(#D7DADC,20%)
+			font-size: 24px
+		input
+			padding: 4px 10px
+			width: 100%
+			margin-top: 15px
+			outline: none
+		button
+			margin-top: 10px
+		.total-holder
+			color: darken(#D7DADC,20%)
+			display: flex
+			justify-content: space-between
+			padding: 0 70px
+			margin-top: 20px
+			span
+				color: #FEB941
+			p
+				margin: 0
+		.confirmation-holder
+			color: darken(#D7DADC,20%)
+			display: flex
+			align-items: center
+			margin-top: 20px
+			justify-content: center
+			span
+				margin-left: 15px
+					
+			input
+				width: 15px
+				height: 15px
+				margin: 0
+		.utility-holder__left-side
+			border-right: 1px solid #719DCA
+			
+.pay-page-holder__nav
+	display: inline-block
+	padding: 0
+	margin: 0
+
+.pay-page-holder
+	margin-top: 50px
+
+.pay-page-side-nav
+	position: fixed
+	left: 1%
+	top: 14%
+	select
+		width: 170px
+		display: block
+

@@ -1,0 +1,42 @@
+<section class="history-page-holder">
+	<div class="container">
+		<div class="history-page-side-nav">
+			<button class="button active-yearly" [class.active-yearly]="isActive1" (click)="isActive1=true;isActive2=false;nth=years;"><span>Yearly</span></button>
+			<button class="button" [class.active-monthly]="isActive2" (click)="isActive2=true;isActive1=false;nth=months;"><span>Monthly</span></button>
+		</div>
+		<div class="history-page-holder__content">
+			<div class="row">
+			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let n of nth" >
+			    <div class="utility-holder" [class.active-yearly]="isActive1" [class.active-monthly]="isActive2">
+			    	<h3 class="card-title">{{[n]}}</h3>
+			    	<div class="row">    		
+				      <div class="utility-holder__left-side col-6">
+				      	<h5>Date</h5>
+				        <ul>
+					        <li>04.05.2018</li>
+					        <li>05.05.2018</li>
+					        <li>06.05.2018</li>
+					        <li>07.05.2018</li>
+					        <li>08.05.2018</li>
+				      	</ul>
+				      </div>
+				      <div class="utility-holder__right-side col-6">
+				      	<h5>Amount</h5>
+				      	<ul>
+					        <li>+ 240</li>
+					        <li>+ 240</li>
+					        <li>+ 240</li>
+					        <li>+ 240</li>
+					        <li>+ 240</li>
+				      	</ul>	
+				      </div>
+			      </div>
+			      <div class="total-holder">
+			      	<p>Total</p><span>0</span>
+			      </div>
+			    </div>
+			  </div>
+		  </div>
+		</div>
+	</div>
+</section>
