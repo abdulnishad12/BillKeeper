@@ -1,32 +1,10 @@
 <section class="pay-page-holder">
 	<div class="container">
-		<div class="pay-page-side-nav">
-			<select class="custom-select custom-select-lg mb-3">
-				<option selected disabled="">Year</option>
-				<option value="1">2018</option>
-				<option value="2">2017</option>
-				<option value="3">2016</option>
-			</select>
-
-			<select class="custom-select custom-select-md mb-3">
-				<option selected disabled="">Month</option>
-				<option value="1">Dec</option>
-				<option value="2">Jan</option>
-				<option value="3">Mar</option>
-			</select>
-			
-			<select class="custom-select custom-select-sm">
-				<option selected disabled="">Day</option>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-			</select>
-		</div>
 		<div class="pay-page-holder__content">
 			<div class="row">
 			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let utility of utilities">
 			    <div class="utility-holder">
-			    	<h3 class="card-title">{{utility}}</h3>
+			    	<h3 class="card-title">{{utility.name}}</h3>
 			    	<div class="row">    		
 				      <div class="utility-holder__left-side col-6">
 				      	<h5>Direct Payment</h5>
@@ -34,16 +12,16 @@
 				        <div class="confirmation-holder">
 				        	<input type="checkbox" name="">
 				        	<span>Confirm</span>
-				        </div>
+				        </div>	
 				        <button class="button">Pay</button>
 				      </div>
 				      <div class="utility-holder__right-side col-6">
 				      	<h5>Calculation</h5>
-				      	<input type="numbers" name="" placeholder="Enter counter amount">
+				      	<input type="numbers" name="" placeholder="Enter counter amount" [ngModel]="">
 				      	<div class="total-holder">
 					      	<p>Total:</p>
 					      	<span>0</span>
-				      	</div>
+				      	</div>				   
 				      	<button class="button">Culculate</button> 	
 				      </div>
 			      </div>

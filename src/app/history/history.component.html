@@ -1,38 +1,45 @@
 <section class="history-page-holder">
 	<div class="container">
-		<div class="history-page-side-nav">
-			<button class="button active-yearly" [class.active-yearly]="isActive1" (click)="isActive1=true;isActive2=false;nth=years;"><span>Yearly</span></button>
-			<button class="button" [class.active-monthly]="isActive2" (click)="isActive2=true;isActive1=false;nth=months;"><span>Monthly</span></button>
+		<div class="row">
+			<div class="history-page-side-nav col-12">
+				<button class="button active-yearly mr-4" [class.active-yearly]="isActive1" (click)="isActive1=true;isActive2=false;yearsOrMonths=years;"><span>Yearly</span></button>
+				<button class="button" [class.active-monthly]="isActive2" (click)="isActive2=true;isActive1=false;yearsOrMonths=months;"><span>Monthly</span></button>
+			</div>
 		</div>
 		<div class="history-page-holder__content">
 			<div class="row">
-			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let n of nth" >
+			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let n of yearsOrMonths" >
 			    <div class="utility-holder" [class.active-yearly]="isActive1" [class.active-monthly]="isActive2">
-			    	<h3 class="card-title">{{[n]}}</h3>
+			    	<h3 class="card-title">{{[n.name]}}</h3>
 			    	<div class="row">    		
 				      <div class="utility-holder__left-side col-6">
-				      	<h5>Date</h5>
+				      	<h5 *ngIf="isActive2">Utilities</h5>
+				      	<h5 *ngIf="isActive1">Months</h5>
 				        <ul>
-					        <li>04.05.2018</li>
-					        <li>05.05.2018</li>
-					        <li>06.05.2018</li>
-					        <li>07.05.2018</li>
-					        <li>08.05.2018</li>
+				        	<div class="if-holder" *ngIf="isActive1">
+				        		<li *ngFor = "let m of months">{{m.name}}</li>
+				        	</div>
+				        	<div class="if-holder" *ngIf="isActive2">
+				        		<li *ngFor = "let m of utilities">{{m.name}}</li>
+				        	</div>
 				      	</ul>
 				      </div>
 				      <div class="utility-holder__right-side col-6">
-				      	<h5>Amount</h5>
+				      	<h5>Total</h5>
 				      	<ul>
-					        <li>+ 240</li>
-					        <li>+ 240</li>
-					        <li>+ 240</li>
-					        <li>+ 240</li>
-					        <li>+ 240</li>
+					        <div class="if-holder" *ngIf="isActive1">
+				        		<li *ngFor = "let m of months">{{m.total}}</li>
+				        	</div>
+				        	<div class="if-holder" *ngIf="isActive2">
+				        		<li *ngFor = "let m of utilities">{{m.total}}</li>
+				        	</div>
 				      	</ul>	
 				      </div>
 			      </div>
 			      <div class="total-holder">
-			      	<p>Total</p><span>0</span>
+			      	<p>Total</p>
+			      	<span *ngIf="isActive1">{{totalYears}}</span>
+			      	<span *ngIf="isActive2">{{totalMonths}}</span>
 			      </div>
 			    </div>
 			  </div>

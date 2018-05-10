@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {PAYMENTS,YEARS,MONTHS,UTILITIES,SETTINGS,DATEPICKER} from '../mock-payment'
 
 @Component({
   selector: 'app-pay',
@@ -7,9 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PayComponent implements OnInit {
  
- 	utilities= [
- 		"Light","Gas","Water","Trash", "Another"
- 	]
+ 	utilities= UTILITIES
+ 	years = YEARS
 
 
   constructor() { }

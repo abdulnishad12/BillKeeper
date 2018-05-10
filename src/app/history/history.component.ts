@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {PAYMENTS,YEARS,MONTHS,UTILITIES} from '../mock-payment'
 
 @Component({
   selector: 'app-history',
@@ -7,18 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HistoryComponent implements OnInit {
 
+  payment = PAYMENTS
+  years = YEARS
+  months = MONTHS
+  utilities = UTILITIES
+  yearsOrMonths = YEARS
 
-  nth = [
-    "2019","2018","2017","2016", "2015"
-  ]
+  totalMonths = 0
+  totalYears = 0
 
-  years= [
-    "2019","2018","2017","2016", "2015"
-  ]
-
-  months = [
-    "March","April","May","June","July"
-  ]
 
 
 
@@ -28,6 +26,12 @@ export class HistoryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    for (let p of this.utilities) {
+      this.totalMonths += p.total;
+    }
+    for (let p of this.months) {
+      this.totalYears += p.total;
+    }
   }
 
 }
