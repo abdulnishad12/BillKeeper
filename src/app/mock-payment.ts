@@ -1,18 +1,15 @@
 import { Payment, Years, Months, Utilities, Settings, DatePicked } from './payment';
 
 export const PAYMENTS: Payment[] = [
-  { id: 1, utility: 'Light', year:2018,month:"May", total:1250 },
-  { id: 2, utility: 'Gas', year:2018,month:"May", total:1250  },
-  { id: 3, utility: 'Water', year:2018,month:"May", total:1250  },
-  { id: 4, utility: 'Trash', year:2018,month:"May", total:1250  },
-  { id: 5, utility: 'Another', year:2018,month:"May", total:1250  }
+  {  utility: 'Light', year:2018,month:"May", total:1250 },
+  {  utility: 'Gas', year:2018,month:"May", total:1250  },
+  {  utility: 'Water', year:2018,month:"May", total:1250  },
+  {  utility: 'Trash', year:2018,month:"May", total:1250  },
+  {  utility: 'Another', year:2018,month:"May", total:1250  }
 ];
 
 export const YEARS: Years[] = [
-  {name:2018},
-  {name:2017},
-  {name:2016},
-  {name:2015}
+  {name:2019}
 ];
 
 export const MONTHS: Months[] = [

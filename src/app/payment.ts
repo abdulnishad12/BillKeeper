@@ -1,5 +1,4 @@
 export class Payment {
-	id: number;
 	utility: string;
 	year: number;
 	month: string;

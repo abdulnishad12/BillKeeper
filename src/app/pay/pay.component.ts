@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {PAYMENTS,YEARS,MONTHS,UTILITIES,SETTINGS,DATEPICKER} from '../mock-payment'
+import {PAYMENTS,YEARS,MONTHS,UTILITIES,SETTINGS,DATEPICKER} from '../mock-payment';
 
 @Component({
   selector: 'app-pay',

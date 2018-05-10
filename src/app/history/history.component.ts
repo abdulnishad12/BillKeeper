@@ -17,11 +17,10 @@ export class HistoryComponent implements OnInit {
   totalMonths = 0
   totalYears = 0
 
+  isActive1 = true
+  isActive2 = false
 
-
-
-  isActive1 = true;
-  isActive2 = false;
+  selectedYear=new Date().getFullYear();
 
   constructor() { }
 
@@ -32,6 +31,8 @@ export class HistoryComponent implements OnInit {
     for (let p of this.months) {
       this.totalYears += p.total;
     }
+
+
   }
 
 }

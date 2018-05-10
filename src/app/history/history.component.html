@@ -2,13 +2,20 @@
 	<div class="container">
 		<div class="row">
 			<div class="history-page-side-nav col-12">
+
 				<button class="button active-yearly mr-4" [class.active-yearly]="isActive1" (click)="isActive1=true;isActive2=false;yearsOrMonths=years;"><span>Yearly</span></button>
 				<button class="button" [class.active-monthly]="isActive2" (click)="isActive2=true;isActive1=false;yearsOrMonths=months;"><span>Monthly</span></button>
+				<select *ngIf="isActive2" [(ngModel)]="selectedYear" class="form-control form-control-md">
+					<option selected>2019</option>
+					<option>2018</option>
+					<option>2017</option>
+					<option>2016</option>
+				</select>
 			</div>
 		</div>
 		<div class="history-page-holder__content">
 			<div class="row">
-			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let n of yearsOrMonths" >
+			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let n of yearsOrMonths">
 			    <div class="utility-holder" [class.active-yearly]="isActive1" [class.active-monthly]="isActive2">
 			    	<h3 class="card-title">{{[n.name]}}</h3>
 			    	<div class="row">    		
