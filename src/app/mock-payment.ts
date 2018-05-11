@@ -1,4 +1,4 @@
-import { Payment, Years, Months, Utilities, Settings, DatePicked } from './payment';
+import { Payment, Months, Utilities, Settings, DatePicked } from './payment';
 
 export const PAYMENTS: Payment[] = [
   {  utility: 'Light', year:2018,month:"May", total:1250 },
@@ -8,10 +8,7 @@ export const PAYMENTS: Payment[] = [
   {  utility: 'Another', year:2018,month:"May", total:1250  }
 ];
 
-export const YEARS: Years[] = [
-  {name:2019}
-];
-
+export const YEARS: Months[] = [];
 export const MONTHS: Months[] = [
   {name:"Jan",total:31},
   {name:"Feb",total:28},

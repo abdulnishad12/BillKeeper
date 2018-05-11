@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {PAYMENTS,YEARS,MONTHS,UTILITIES} from '../mock-payment'
+import { Component, OnInit,Input } from '@angular/core';
+import {PAYMENTS,MONTHS,UTILITIES} from '../mock-payment'
 
 @Component({
   selector: 'app-history',
@@ -7,12 +7,10 @@ import {PAYMENTS,YEARS,MONTHS,UTILITIES} from '../mock-payment'
   styleUrls: ['./history.component.sass']
 })
 export class HistoryComponent implements OnInit {
-
   payment = PAYMENTS
-  years = YEARS
   months = MONTHS
   utilities = UTILITIES
-  yearsOrMonths = YEARS
+  
 
   totalMonths = 0
   totalYears = 0
