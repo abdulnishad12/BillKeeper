@@ -1,4 +1,5 @@
 export class Payment {
+	id:number;
 	utility: string;
 	year: number;
 	month: string;
@@ -9,8 +10,7 @@ export class Years {
 }
 
 export class Months {
-	name:string;
-	total: number;
+	
 }
 
 export class Utilities {

@@ -7,6 +7,8 @@ import { HistoryComponent } from './history/history.component';
 import { PayComponent } from './pay/pay.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AppRoutingModule } from './app-routing.module';
+import {DataService} from './data.service'
+import {PaymentService} from './payment.service'
 
 @NgModule({
   declarations: [
@@ -21,7 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [],
+  providers: [DataService,PaymentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
