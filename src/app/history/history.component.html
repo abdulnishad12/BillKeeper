@@ -21,10 +21,10 @@
 				      	<h5 *ngIf="isActive1">Months</h5>
 				        <ul>
 				        	<div class="if-holder" *ngIf="isActive1">
-				        		<li *ngFor = "let m of months">{{m}}</li>
+				        		<li *ngFor = "let m of totalOfMonth">{{m.month}}</li>
 				        	</div>
 				        	<div class="if-holder" *ngIf="isActive2">
-				        		<li *ngFor = "let m of utilities">{{m.name}}</li>
+				        		<li *ngFor = "let m of totalOfUtility">{{m.utility}}</li>
 				        	</div>
 				      	</ul>
 				      </div>
@@ -32,18 +32,18 @@
 				      	<h5>Total</h5>
 				      	<ul>
 					        <div class="if-holder" *ngIf="isActive1">
-				        		<li *ngFor = "let m of months">{{m.total}}</li>
+				        		<li *ngFor = "let m of totalOfMonth">{{m.total}}</li>
 				        	</div>
 				        	<div class="if-holder" *ngIf="isActive2">
-				        		<li *ngFor = "let m of utilities">{{m.total}}</li>
+				        		<li *ngFor = "let m of totalOfUtility">{{m.total}}</li>
 				        	</div>
 				      	</ul>	
 				      </div>
 			      </div>
 			      <div class="total-holder">
 			      	<p>Total</p>
-			      	<span *ngIf="isActive1">{{totalYears}}</span>
-			      	<span *ngIf="isActive2">{{totalMonths}}</span>
+			      	<span *ngIf="isActive1">{{totalOfMonths}}</span>
+			      	<span *ngIf="isActive2">{{totalOfUtilities}}</span>
 			      </div>
 			    </div>
 			  </div>

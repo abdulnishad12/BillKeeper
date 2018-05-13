@@ -1,2 +1,15 @@
-<input type="number" class="form-control" [(ngModel)]="startYear" (click)="click();click_test();">
+<div class="container">
+		<div class="settings-page-holder__content">
+			<div class="row">
+			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let utility of utilities">
+			    <div class="utility-holder">
+			    	<h3 class="card-title">{{utility}}</h3>  		
+			      <input placeholder="Enter amount of counter for prev month" #counterPreveousMonth>
+			      <input placeholder="Enter tarif for this utility" #tarifOfUtility>
+			      <button class="button" (click) = "addTodo(counterPreveousMonth.value,tarifOfUtility.value,utility);counterPreveousMonth.value='';tarifOfUtility.value='';">Submite</button>
+			    </div>
+			  </div>
+		  </div>
+		</div>
+	</div>
 

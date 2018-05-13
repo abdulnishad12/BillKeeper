@@ -1,24 +1,17 @@
 import { Injectable } from '@angular/core';
-import { MONTHS } from './mock-payment'
+import { SETTINGS } from './mock-payment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-	years=[new Date().getFullYear()];
-	startYear=new Date().getFullYear();
+	settings=SETTINGS;
 
+	getSettings(){
+		return this.settings;
+	}
 
-	getMonths(){
-		return MONTHS;
-	}
-	getTest(){
-		return this.years;
-	}
-	getStartYear(){
-		return this.startYear
-	}
 
   constructor() { }
 }

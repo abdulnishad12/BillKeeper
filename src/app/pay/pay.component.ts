@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {PAYMENTS,MONTHS,UTILITIES,SETTINGS,DATEPICKER} from '../mock-payment';
+import {PaymentService} from '../payment.service'
 
 @Component({
   selector: 'app-pay',
@@ -8,12 +8,14 @@ import {PAYMENTS,MONTHS,UTILITIES,SETTINGS,DATEPICKER} from '../mock-payment';
 })
 export class PayComponent implements OnInit {
  
- 	utilities= UTILITIES
+ 	utilities = [];
+ 	total=[];
 
 
-  constructor() { }
+  constructor(private paymentService: PaymentService) { }
 
   ngOnInit() {
+  	this.utilities = this.paymentService.getUtilitiesInformation();
   }
 
 }

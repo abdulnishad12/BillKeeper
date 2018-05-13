@@ -5,29 +5,13 @@ export class Payment {
 	month: string;
 	total:number;
 }
-export class Years {
-	name:number;
-}
 
-export class Months {
-	
-}
 
-export class Utilities {
-	name:string;
-	total:number;
-}
 
 export class Settings {
-	lightPrice:number;
-	lightCounter:number;
-	gasPrice:number;
-	gasCounter:number;
-	waterPrice:number;
-	waterCounter:number;
+	utilityName:String;
+	tarif:Number;
+	prevoiuseCounter:Number;
 }
 
-export class DatePicked {
-	year:number;
-	month:string;
-}
+

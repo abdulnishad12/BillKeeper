@@ -1,5 +1,4 @@
 import { Component, OnInit,Input } from '@angular/core';
-import {PAYMENTS,UTILITIES} from '../mock-payment';
 // import {Months} from '../payment'
 
 import {DataService} from '../data.service'
@@ -11,30 +10,32 @@ import {PaymentService} from '../payment.service'
   styleUrls: ['./history.component.sass']
 })
 export class HistoryComponent implements OnInit {
-  payment = PAYMENTS
-  utilities = UTILITIES
-
-  // months: Months[];
+  
   years=[];
   yearsOrMonths=[];
   months=[];
+  utilities=[];
+  totalOfUtility=[];
+  totalOfUtilities:number;
+  totalOfMonth=[];
+  totalOfMonths= 0;
   
-
-  totalMonths = 0
-  totalYears = 0
-
-  isActive1 = true
-  isActive2 = false
+  isActive1 = true;
+  isActive2 = false;
 
   selectedYear=new Date().getFullYear();
 
   constructor(private dataService: DataService,private paymentService: PaymentService) { }
 
   ngOnInit() {
-    this.months = this.paymentService.getMonths();
-    this.years = this.dataService.getTest();
-    this.yearsOrMonths=this.years;
-    console.log(this.months);
+    this.months = this.paymentService.getMonthsInformation();
+    this.years = this.paymentService.getYearsInformation();
+    this.utilities =this.paymentService.getUtilitiesInformation();
+    this.yearsOrMonths = this.years;
+    this.totalOfUtility = this.paymentService.getTotalOfUtilityInformation();
+    this.totalOfUtilities = this.paymentService.getTotalOfUtilitiesInformation();
+    this.totalOfMonth = this.paymentService.getTotalOfMonthInformation();
+    this.totalOfMonths = this.paymentService.getTotalOfMonthsInformation();
   }
 
 }
