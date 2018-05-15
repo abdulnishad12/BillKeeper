@@ -4,25 +4,28 @@
 			<div class="row">
 			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let utility of utilities">
 			    <div class="utility-holder">
-			    	<h3 class="card-title">{{utility}}</h3>
+			    	<div class="utility-holder__header">
+				    	<h3 class="card-title">{{utility}}</h3>
+				    	<input #date type="month">
+			    	</div>
 			    	<div class="row">    		
 				      <div class="utility-holder__left-side col-6">
 				      	<h5>Direct Payment</h5>
-				        <input type="numbers" name="" placeholder="Enter payment amount">
+				        <input type="number" name="" placeholder="Enter payment amount" #amountOfPaymentThisMonth>
 				        <div class="confirmation-holder">
 				        	<input type="checkbox" name="">
 				        	<span>Confirm</span>
 				        </div>	
-				        <button class="button">Pay</button>
+				        <button class="button" (click) = "getPaymentInformation(+amountOfPaymentThisMonth.value,utility,date.value);amountOfPaymentThisMonth.value='';">Pay</button>
 				      </div>
 				      <div class="utility-holder__right-side col-6">
 				      	<h5>Calculation</h5>
-				      	<input type="numbers" name="" placeholder="Enter counter amount">
+				      	<input type="numbers" name="" placeholder="Enter counter amount" #counterForThisMonth>
 				      	<div class="total-holder">
 					      	<p>Total:</p>
-					      	<span>0</span>
+					      	<span>{{totalOfCalculation}}</span>
 				      	</div>				   
-				      	<button class="button">Culculate</button> 	
+				      	<button class="button" (click) = "getCalculateInformation(counterForThisMonth.value,utility);counterForThisMonth.value='';">Calculate</button> 	
 				      </div>
 			      </div>
 			    </div>

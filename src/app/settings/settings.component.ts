@@ -22,23 +22,20 @@ export class SettingsComponent implements OnInit {
     this.settings = this.dataService.getSettings();
   }
 
-  addTodo(counterPreveousMonth:number,tarifOfUtility:number,utility:string) {
+  getSettingsInformation(counterPreviousMonth:number,tarifOfUtility:number,utility:string) {
     if (this.settings.length < 1 || this.settings == undefined){
-      this.settings.push({utilityName:utility,tarif:tarifOfUtility,prevoiuseCounter:counterPreveousMonth});
+      this.settings.push({utilityName:utility,tarif:tarifOfUtility,previouseCounter:counterPreviousMonth});
     }else{
       let n = 0;
       for (let key of this.settings){
-        if(key.utility===utility){
+        if(key.utilityName===utility){
           this.settings.splice(n,n);
-          this.settings.push({utilityName:utility,tarif:tarifOfUtility,prevoiuseCounter:counterPreveousMonth});
-        }else{
-          this.settings.push({utilityName:utility,tarif:tarifOfUtility,prevoiuseCounter:counterPreveousMonth});
         }
         n+=1;
       }
-      this.settings.push({utilityName:utility,tarif:tarifOfUtility,prevoiuseCounter:counterPreveousMonth});    
+      this.settings.push({utilityName:utility,tarif:tarifOfUtility,previouseCounter:counterPreviousMonth});    
     }
-    console.log(this.settings);
+    return this.settings
   }
 
 

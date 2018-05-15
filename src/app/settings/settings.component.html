@@ -4,9 +4,9 @@
 			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let utility of utilities">
 			    <div class="utility-holder">
 			    	<h3 class="card-title">{{utility}}</h3>  		
-			      <input placeholder="Enter amount of counter for prev month" #counterPreveousMonth>
+			      <input placeholder="Enter amount of counter for prev month" #counterPreviousMonth>
 			      <input placeholder="Enter tarif for this utility" #tarifOfUtility>
-			      <button class="button" (click) = "addTodo(counterPreveousMonth.value,tarifOfUtility.value,utility);counterPreveousMonth.value='';tarifOfUtility.value='';">Submite</button>
+			      <button class="button" (click) = "getSettingsInformation(counterPreviousMonth.value,tarifOfUtility.value,utility);counterPreviousMonth.value='';tarifOfUtility.value='';">Submit</button>
 			    </div>
 			  </div>
 		  </div>
