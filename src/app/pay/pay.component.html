@@ -2,35 +2,74 @@
 	<div class="container">
 		<div class="pay-page-holder__content">
 			<div class="row">
-			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let utility of utilities">
-			    <div class="utility-holder">
+			  <div class="col-lg-6 mb-5" *ngFor="let utility of tariffs">
+			    <div class="utility-holder utility-holder--variable" *ngIf = "utility.fixedPayment===false">
 			    	<div class="utility-holder__header">
-				    	<h3 class="card-title">{{utility}}</h3>
-				    	<input #date type="month">
-			    	</div>
-			    	<div class="row">    		
-				      <div class="utility-holder__left-side col-6">
+				    	<h3 class="card-title">{{utility.utilityName}}</h3>
+				    </div>
+			    	<div class="row utility-holder-content">    		
+				      <div class="utility-holder-content__left-side col-6">
 				      	<h5>Direct Payment</h5>
-				        <input type="number" name="" placeholder="Enter payment amount" #amountOfPaymentThisMonth>
-				        <div class="confirmation-holder">
-				        	<input type="checkbox" name="">
-				        	<span>Confirm</span>
-				        </div>	
-				        <button class="button" (click) = "getPaymentInformation(+amountOfPaymentThisMonth.value,utility,date.value);amountOfPaymentThisMonth.value='';">Pay</button>
+				        <input type="number" placeholder="Enter payment amount" #amountOfPaymentVariable required>
+			        	<div class="datepicker">
+			    				<p>{{currentYear}}</p>
+			    				<select class="custom-select" #dateVariable>
+			    					<option selected>{{currentMonth + 1 | month}}</option>
+			    					<option>{{currentMonth | month}}</option>
+			    				</select>
+			    			</div>
+				        <button class="button" (click) = "getPaymentInformation(+amountOfPaymentVariable.value,utility.utilityName,dateVariable.value);amountOfPaymentVariable.value='';getPaymentTwo();">Pay</button>
 				      </div>
-				      <div class="utility-holder__right-side col-6">
+				      <div class="utility-holder-content__right-side col-6">
 				      	<h5>Calculation</h5>
-				      	<input type="numbers" name="" placeholder="Enter counter amount" #counterForThisMonth>
+				      	<input type="numbers" name="" placeholder="Enter counter amount" #counterForThisMonth required>
 				      	<div class="total-holder">
 					      	<p>Total:</p>
-					      	<span>{{totalOfCalculation}}</span>
+					      	<span *ngIf="selectedUtility===utility.utilityName">{{totalCalculation}}</span>
+					      	<span *ngIf="selectedUtility!=utility.utilityName">{{0}}</span>
 				      	</div>				   
-				      	<button class="button" (click) = "getCalculateInformation(counterForThisMonth.value,utility);counterForThisMonth.value='';">Calculate</button> 	
+				      	<button class="button" (click) = "getCalculateInformation(counterForThisMonth.value,utility.utilityName);counterForThisMonth.value='';test();">Calculate</button> 	
 				      </div>
 			      </div>
 			    </div>
+
+			    <div class="utility-holder utility-holder--fixed" *ngIf = "utility.fixedPayment===true">
+			    	<div class="utility-holder__header">
+			    		<h3 class="card-title">{{utility.utilityName}}</h3>
+			    	</div>
+			    	<div class="row utility-holder-conten">    		
+			    		<div class="utility-holder-content__left-side col-12">
+			    			<h5>Direct Payment</h5>
+			    			<input type="number" placeholder="Enter payment amount" #amountOfPaymentFixed>
+			    			<div class="datepicker" #dateFixed>
+			    				<p>{{currentYear}}</p>
+			    				<select class="custom-select">
+			    					<option>{{currentMonth + 1 | month}}</option>
+			    					<option>{{currentMonth | month}}</option>
+			    				</select>
+			    			</div>
+			    			<button class="button" (click) = "getPaymentInformation(+amountOfPaymentFixed.value,utility.utilityName,dateFixed.value);amountOfPaymentFixed.value='';getPaymentTwo();">Pay</button>
+			    		</div>
+			    	</div>
+			    </div>
+
 			  </div>
 		  </div>
+
+		 <!--  <div class="history-holder">
+			  <div class="row" *ngFor="let p of payments">
+			  	<div class="col-12 history-items-holder" *ngIf = "historyCounter - p.id < 6">
+		  			<div class="row">
+			  			<div class="col-3 history-item">{{p.utilityName}}</div>
+			  			<div class="col-3 history-item">{{p.year}}</div>
+			  			<div class="col-3 history-item">{{p.month | month}}</div>
+			  			<div class="col-3 history-item">{{p.amountPayment}}</div>	
+		  			</div>
+			  	</div>
+			  </div>
+		  </div> -->
+
 		</div>
+
 	</div>
 </section>

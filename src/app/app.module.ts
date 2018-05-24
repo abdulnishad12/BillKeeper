@@ -1,8 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DlDateTimePickerDateModule } from 'angular-bootstrap-datetimepicker';
 import { MonthPipe } from 'src/pipis/month';
+
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService }  from './mock-db';
+
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { ModalModule } from 'ngx-bootstrap';
+
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
@@ -10,8 +19,7 @@ import { HistoryComponent } from './history/history.component';
 import { PayComponent } from './pay/pay.component';
 import { SettingsComponent } from './settings/settings.component';
 import { AppRoutingModule } from './app-routing.module';
-import {DataService} from './data.service'
-import {PaymentService} from './payment.service'
+import { PaymentService } from './payment.service';
 
 @NgModule({
   declarations: [
@@ -20,16 +28,23 @@ import {PaymentService} from './payment.service'
     PayComponent,
     SettingsComponent,
     MonthPipe,
-
+    
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    DlDateTimePickerDateModule,
+    HttpClientModule,
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService, { dataEncapsulation: false }
+    ),
+    BsDatepickerModule.forRoot(),
+    AlertModule.forRoot(),
+    ModalModule.forRoot(),
+    ReactiveFormsModule,
   ],
-  providers: [DataService,PaymentService],
+  providers: [PaymentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

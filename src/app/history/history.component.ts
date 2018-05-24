@@ -1,7 +1,7 @@
 import { Component, OnInit,Input } from '@angular/core';
 
-import {DataService} from '../data.service'
-import {PaymentService} from '../payment.service'
+import {PaymentService} from '../payment.service';
+import { Payment,PaymentByMonth} from '../payment';
 
 @Component({
   selector: 'app-history',
@@ -9,70 +9,96 @@ import {PaymentService} from '../payment.service'
   styleUrls: ['./history.component.sass']
 })
 export class HistoryComponent implements OnInit {
-  
-  years=[];
-  yearsOrMonths=[];
-  months=[];
-  utilities=[];
-  totalOfUtility=[];
-  totalOfUtilityTest=[];
-  totalOfUtilities:number;
-  totalOfMonth=[];
-  totalOfMonths= 0;
-  payment=[];
-  totalOfUtilityForYear = [];
-  
-  isActive1 = true;
-  isActive2 = false;
 
+  public paymentByYear:Payment[];
+  public payments: Payment[];
   selectedYear = new Date().getFullYear();
-
-  constructor(private dataService: DataService,private paymentService: PaymentService) { }
+  public years = [];
+  public months = [];
+  public paymentsNotRepeat=[];
+  public utilities =[];
+  public historyDisplay: PaymentByMonth[] =[];
+  public totalByMonth = [];
+  
+  constructor(private paymentService: PaymentService) { }
 
   ngOnInit() {
-    this.months = this.paymentService.getMonthsInformation();
-    this.years = this.paymentService.getYearsInformation();
-    this.utilities =this.paymentService.getUtilitiesInformation();
-    this.yearsOrMonths = this.years;
-    this.totalOfUtility = this.paymentService.getTotalOfUtilityInformation();
-    this.totalOfUtilities = this.paymentService.getTotalOfUtilitiesInformation();
-    this.totalOfMonth = this.paymentService.getTotalOfMonthInformation();
-    this.totalOfMonths = this.paymentService.getTotalOfMonthsInformation();
-    this.payment = this.paymentService.getPaymentInformation();
-    this.choseYear(this.selectedYear);
+    this.getPaymentByYear();
+    this.getPayment(); 
   }
 
-  choseYear(selectedYear:number){
-    this.totalOfUtility=[];
-    this.totalOfUtilityForYear = [];
-    this.totalOfUtilities=0;
-    for (let key of this.payment){
-      let UtilityTotal = 0;
-      if (key.year == selectedYear){
-        this.totalOfUtility.push({month:key.month,total:key.total,utility:key.utility});
-        
+  yearsOrder(a, b) {
+    if (a > b) return -1;
+    if (a < b) return 1;
+  }
+
+  monthsOrder(a, b) {
+    if (a > b) return 1;
+    if (a < b) return -1;
+  }
+
+  getPaymentByYear(): void {
+    this.paymentService.getPaymentsByYear(this.selectedYear).subscribe(data => {this.paymentByYear = data;
+      
+      //Find unique Months in DB for selected year
+      this.months = [];
+      for (let key of this.paymentByYear){
+        if (!this.months.length){
+          this.months.push(key.month)
+        }else{
+          if(this.months.indexOf(key.month)==-1){
+            this.months.push(key.month)
+          }
+        } 
       }
-    }
-    for (let i of this.totalOfUtility){
-      if(this.totalOfUtilityTest.length === 0){
-        this.totalOfUtilityTest.push(i);
-      }else{
-        for (let j of this.totalOfUtilityTest){
-          if(this.totalOfUtilityTest.indexOf(i.month)==-1){
-            this.totalOfUtilityTest.push(i);
-          }else{
-            i.total
+      this.months.sort(this.monthsOrder);
+
+      //Making parse DB to display on history page
+      let u = 0;
+      this.historyDisplay=[];
+      for (let key of this.months){
+        this.historyDisplay.push({month:key,payments:[]});
+        for (let i of this.paymentByYear){
+          if(key===i.month){
+            this.historyDisplay[u].payments.push({utilityName:i.utilityName,amountPayment:i.amountPayment});
           }
         }
+        u+=1;
       }
-      // if(this.years.indexOf(key.year)==-1){
-      //   this.years.push(key.year)
-      // }
-    }
-    for(let key of this.totalOfUtility){
-      this.totalOfUtilities= this.totalOfUtilities + key.total;
-    }
- 
+
+      //Find total of every month
+      this.totalByMonth=[];
+      let totalMonth = 0;
+      for (let key of this.months){
+        for (let u of this.paymentByYear){
+          if (key==u.month){
+            totalMonth+=u.amountPayment;
+          }
+        }
+        this.totalByMonth.push({month:key,totalOfMonth:totalMonth})
+        totalMonth = 0;
+      }
+    });
   }
+
+  getPayment(): void {
+
+    //Find unique Years in DB
+    this.paymentService.getPayments().subscribe(data => {this.payments = data;
+      for (let i of this.payments){
+        if (!this.years.length){
+          this.years.push(i.year)
+        }else{
+          if(this.years.indexOf(i.year)==-1){
+            this.years.push(i.year)
+          }
+        }  
+      } 
+      this.years.sort(this.yearsOrder);     
+    });
+  }
+
+
+ 
 
 }
