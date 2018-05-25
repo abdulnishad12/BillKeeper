@@ -23,6 +23,13 @@ export class SettingsComponent implements OnInit {
   addNewUtility: FormGroup;
   addTariffVariable: FormGroup;
 
+  selectedUtility: string;
+
+  //Validatoe variable
+  validatorVariableCounter: boolean = false;
+  validatorVariableTariff: boolean = false;
+  validatorFixedTariff: boolean = false;
+
 
 
 
@@ -72,15 +79,59 @@ export class SettingsComponent implements OnInit {
 
   }
 
+  // Add new tariff
   onSubmitNewTariff(utilityName:string,fixedPayment:boolean,counterAnount:number,tariffAmount:number){
-    this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
-      for (let key of this.tariffs){
-        if (key.utilityName===utilityName){
-          this.tariffsService.updateTariff({id:key.id, utilityName:key.utilityName, tariff: tariffAmount, counterForPreviousMonth:counterAnount,fixedPayment:key.fixedPayment}).subscribe();
-        }
-      }  
-      this.getTariffs();
+      this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
+        for (let key of this.tariffs){
+          if (key.utilityName===utilityName){
+            this.tariffsService.updateTariff({id:key.id, utilityName:key.utilityName, tariff: tariffAmount, counterForPreviousMonth:counterAnount,fixedPayment:key.fixedPayment}).subscribe();
+          }
+         }
+        this.getTariffs();
+      });  
+  }
+
+
+  formValidationVariable(utilityName:string,fixedPayment:boolean,counterAnount:any,tariffAmount:any){
+    this.selectedUtility = utilityName;
+    if (counterAnount===0 || counterAnount===null || counterAnount===undefined || counterAnount===''){
+      this.validatorVariableCounter = true
+    }else{
+      if (!isNaN(counterAnount)){
+        this.validatorVariableCounter = false
+      }else{
+        this.validatorVariableCounter = true
+      }      
     }
+    if (tariffAmount===0 || tariffAmount===null || tariffAmount===undefined || tariffAmount===''){
+      this.validatorVariableTariff = true
+    }else{
+      if (!isNaN(tariffAmount)){
+        this.validatorVariableTariff = false
+      }else{
+        this.validatorVariableTariff = true
+      }  
+    }
+    if(!this.validatorVariableTariff && !this.validatorVariableCounter){
+      this.onSubmitNewTariff(utilityName,fixedPayment,counterAnount,tariffAmount)
+    }
+  }
+
+  formValidationFixed(utilityName:string,fixedPayment:boolean,counterAnount:any,tariffAmount:any){
+    this.selectedUtility = utilityName;
+    if (tariffAmount===0 || tariffAmount===null || tariffAmount===undefined || tariffAmount===''){
+      this.validatorFixedTariff = true
+    }else{
+      if (!isNaN(tariffAmount)){
+        this.validatorFixedTariff = false
+      }else{
+        this.validatorFixedTariff = true
+      }  
+    }
+    if(!this.validatorFixedTariff){
+      this.onSubmitNewTariff(utilityName,fixedPayment,counterAnount,tariffAmount)
+    }
+    console.log(this.validatorFixedTariff);
   }
 
 
@@ -93,6 +144,7 @@ export class SettingsComponent implements OnInit {
 
 
 
+   // Modal Window
   openModalWithClass(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(
       template,

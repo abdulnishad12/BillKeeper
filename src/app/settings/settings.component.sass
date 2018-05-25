@@ -11,7 +11,7 @@
 		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)
 	  transition: 0.3s
 	  overflow: hidden
-		&:hover
+		&:hover,&:active
 			transition: all 0.4s ease
 			transform: scale(1.03)
 			background-color: lighten(#719DCA,15%)
@@ -55,6 +55,7 @@
 			margin-top: 30px
 			bottom: 5px
 
+
 .modal-body
 	display: block!important
 	input
@@ -73,7 +74,7 @@
 			margin-right: 10px
 
 
-input.ng-touched.ng-invalid
+input.invalid
 	border: 1px solid red
 	border-radius: 3px
 	
@@ -83,4 +84,10 @@ input.ng-touched.ng-invalid
 	right: 22%
 	transition: all 4s ease
 	position: absolute
+
+.hide
+	display: none
+
+.show
+	display: block
 		

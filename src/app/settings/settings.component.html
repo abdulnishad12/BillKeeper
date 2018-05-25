@@ -13,15 +13,21 @@
 					<h3 class="utility-tariffs__card-title">{{utility.utilityName}}</h3>  
 					<div class="row">
 						<div class="utility-tariffs__input-holder col-6">				
-							<input placeholder="Previous month counter" #counterAnount > 
-							<input  placeholder="Enter tariff" #tariffAmount >	
+							<input [ngClass]="{'invalid': validatorVariableCounter && selectedUtility===utility.utilityName }" placeholder="Previous month counter" #counterAnount > 
+							<div class="error" [ngClass]="{ 'show': validatorVariableCounter && selectedUtility===utility.utilityName,'hide': !(validatorVariableCounter && selectedUtility===utility.utilityName) }">
+								Only numbers allow
+							</div>
+							<input [ngClass]="{'invalid': validatorVariableTariff && selectedUtility===utility.utilityName }" placeholder="Enter tariff" #tariffAmount >	
+							<div class="error" [ngClass]="{ 'show': validatorVariableTariff && selectedUtility===utility.utilityName,'hide': !(validatorVariableTariff && selectedUtility===utility.utilityName) }">
+								Only numbers allow
+							</div>
 						</div>
 						<div class="utility-tariffs__data-holder col-6">	
 							<p>Previous Month: {{utility.counterForPreviousMonth}}</p>
 							<p>Tariff: {{utility.tariff}}</p>
 						</div>
 					</div>
-					<button type ="submit" class="button"  (click) = "onSubmitNewTariff(utility.utilityName,utility.fixedPayment,counterAnount.value,tariffAmount.value);">Submit</button>	
+					<button type ="submit" class="button"  (click) = "formValidationVariable(utility.utilityName,utility.fixedPayment,counterAnount.value,tariffAmount.value);">Submit</button>	
 				</div>
 
 				<!-- Fixed Price Utility -->
@@ -29,13 +35,16 @@
 					<h3 class="utility-tariffs__card-title">{{utility.utilityName}}</h3>  
 					<div class="row utility-tariffs-content ">
 						<div class="utility-tariffs__input-holder col-6">		
-							<input  placeholder="Enter fixed price" #fixedPriceInput>
+							<input [ngClass]="{'invalid': validatorFixedTariff && selectedUtility===utility.utilityName }" placeholder="Enter fixed price" #fixedPriceInput>
+							<div class="error" [ngClass]="{ 'show': validatorFixedTariff && selectedUtility===utility.utilityName,'hide': !(validatorFixedTariff && selectedUtility===utility.utilityName) }">
+								Only numbers allow
+							</div>
 						</div>
 						<div class="utility-tariffs__data-holder col-6">	
 							<p>Fixed Amount: {{utility.tariff}}</p>
 						</div>
 					</div>		
-					<button class="button"  (click) = "addTariff(utility.fixedPayment,fixedPriceInput.value,utility.utilityName,counterPreviousMonth?.value);">Submit</button>
+					<button class="button"  (click) = "formValidationFixed(utility.utilityName,utility.fixedPayment,counterPreviousMonth?.value,fixedPriceInput.value);">Submit</button>
 				</div>
 
 			</div>
@@ -43,7 +52,7 @@
 	</div>
 
 
-	<ng-template #template>
+	<ng-template #addNewUtilityModal>
 		<div class="modal-header">
 			<h4 class="modal-title pull-left">Add new utility</h4>
 			<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide();addNewUtility.reset();">

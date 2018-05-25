@@ -16,7 +16,6 @@ export class PaymentService {
 
 	
 	private paymentUrl = 'api/payments';
-  message:string;
 
 
 		
@@ -24,9 +23,6 @@ export class PaymentService {
 
   constructor(private http: HttpClient) {}
 
-  getMassage(){
-    return this.message
-  }
 
 
   getPaymentsByYear (year:number): Observable<Payment[]>{
@@ -51,9 +47,6 @@ export class PaymentService {
   	return this.http.delete<Payment>(url, httpOptions)
   }
 
-  changeSeatch(message: string) {
-    this.messageSource.next(message)
-  }
 
 
 }

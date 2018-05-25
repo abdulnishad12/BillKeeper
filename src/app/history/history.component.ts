@@ -19,6 +19,7 @@ export class HistoryComponent implements OnInit {
   public utilities =[];
   public historyDisplay: PaymentByMonth[] =[];
   public totalByMonth = [];
+
   
   constructor(private paymentService: PaymentService) { }
 
