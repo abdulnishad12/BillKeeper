@@ -16,7 +16,8 @@
 
 				      	<h5>Direct Payment</h5>
 
-				        <input [ngClass]="{'invalid': validatorVariablePaymnetAmount && selectedUtility===utility.utilityName }" type="text" placeholder="Enter payment amount" #amountOfPaymentVariable>
+				        <input #amountOfPaymentVariable placeholder="Enter Payment Amount"  [value]="totalCalculation!=0 && selectedUtility===utility.utilityName ? totalCalculation : ''"  class="form-control" [ngClass]="{'invalid': validatorVariablePaymnetAmount && selectedUtility===utility.utilityName }" type="text">
+
 				        <div class="error" [ngClass]="{ 'show': validatorVariablePaymnetAmount && selectedUtility===utility.utilityName,'hide': !(validatorVariablePaymnetAmount && selectedUtility===utility.utilityName) }">
 				        	Only numbers allow
 				        </div>
@@ -33,9 +34,9 @@
 			    				<h4 class="modal-title">Payment Confirmation</h4>
 			    				<div class="modal-body text-center">
 			    					<p>Are you sure about this payment?</p>
-			    					<p>date: {{dateVariable.value}} {{currentYear}}</p>
-										<p>utility: {{utility.utilityName}}</p>
-			    					<p>Payment amount: {{+amountOfPaymentVariable.value}}</p>
+			    					<p>Date: {{dateVariable.value}} {{currentYear}}</p>
+										<p>Utility: {{utility.utilityName}}</p>
+			    					<p>Payment amount: {{+amountOfPaymentVariable.value}}$</p>
 			    					<button type="button" class="button" (click)="addPayment(+amountOfPaymentVariable.value,utility.utilityName,dateVariable.value);modalRef.hide();amountOfPaymentVariable.value='';">Yes</button>
 			    					<button type="button" class="button" (click)="modalRef.hide();amountOfPaymentVariable.value='';">No</button>
 			    				</div>
@@ -45,24 +46,24 @@
 			    				<h4 class="modal-title">Update Confirmation</h4>
 			    				<div class="modal-body text-center">
 			    					<p>You have already did payment for this:</p>
-										<p>date: {{dateVariable.value}} {{currentYear}}</p>
-										<p>utility: {{utility.utilityName}}</p>
+			    					<p>Amount: {{paymentAmount}}$</p>
+										<p>Date: {{dateVariable.value}} {{currentYear}}</p>
+										<p>Utility: {{utility.utilityName}}</p>
 			    					<p>Are you sure about additional payment?</p>
-			    					<p>Payment amount: {{+amountOfPaymentVariable.value}}</p>
+			    					<p>Payment amount: {{+amountOfPaymentVariable.value}}$</p>
 			    					<button type="button" class="button" (click)="updatePayment(+amountOfPaymentVariable.value,utility.utilityName,dateVariable.value);modalRef.hide();amountOfPaymentVariable.value='';">Yes</button>
 			    					<button type="button" class="button" (click)="modalRef.hide();amountOfPaymentVariable.value='';">No</button>
 			    				</div>
 			    			</ng-template>
-
 				        <button type="submit" class="button" (click) = "formValidationVariablePayment(+amountOfPaymentVariable.value,utility.utilityName,dateVariable.value,confirmVariablePayment,confirmVariableUpdate);">Pay</button>
-				      
+				    
 				      </div>
 
 				      <div class="utility-holder-content__right-side col-6">
 
 				      	<h5>Calculation</h5>
 
-				      	<input [ngClass]="{'invalid': validatorVariableCalculation && selectedUtility===utility.utilityName }" type="numbers" name="" placeholder="Enter counter amount" #counterForThisMonth >
+				      	<input class="form-control" [ngClass]="{'invalid': validatorVariableCalculation && selectedUtility===utility.utilityName }" type="numbers" name="" placeholder="Enter counter amount" #counterForThisMonth >
 				      	<div class="error" [ngClass]="{ 'show': validatorVariableCalculation && selectedUtility===utility.utilityName,'hide': !(validatorVariableCalculation && selectedUtility===utility.utilityName) }">
 				        	Only numbers allow
 				        </div>
@@ -73,8 +74,7 @@
 					      	<span *ngIf="selectedUtility!=utility.utilityName">{{0}}</span>
 				      	</div>
 
-				      	<button type="submit" class="button" (ngSubmit) = "amountOfPaymentVariable.value = totalCalculation" (click) = "formValidationVariableCalculation(counterForThisMonth.value,utility.utilityName);" >Calculate</button> 	
-				      
+				      	<button type="submit" class="button" (click) = "formValidationVariableCalculation(+counterForThisMonth.value,utility.utilityName);">Calculate</button> 	
 				      </div>
 			      </div>
 
@@ -91,7 +91,7 @@
 
 			    			<h5>Direct Payment</h5>
 
-			    			<input  [ngClass]="{'invalid': validatorFixedPaymnetAmount && selectedUtility===utility.utilityName }" type="text" placeholder="Enter payment amount" #amountOfPaymentFixed>
+			    			<input class="form-control"  [ngClass]="{'invalid': validatorFixedPaymnetAmount && selectedUtility===utility.utilityName }" type="text" placeholder="Enter payment amount" #amountOfPaymentFixed>
 			    			<div class="error" [ngClass]="{ 'show': validatorFixedPaymnetAmount && selectedUtility===utility.utilityName,'hide': !(validatorFixedPaymnetAmount && selectedUtility===utility.utilityName) }">
 				        	Only numbers allow
 				        </div>
@@ -108,9 +108,9 @@
 			    				<h4 class="modal-title">Payment Confirmation</h4>
 			    				<div class="modal-body text-center">
 			    					<p>Are you sure about this payment?</p>
-			    					<p>date: {{dateFixed.value}} {{currentYear}}</p>
-										<p>utility: {{utility.utilityName}}</p>
-			    					<p>Payment amount: {{+amountOfPaymentFixed.value}}</p>
+			    					<p>Date: {{dateFixed.value}} {{currentYear}}</p>
+										<p>Utility: {{utility.utilityName}}</p>
+			    					<p>Payment amount: {{+amountOfPaymentFixed.value}}$</p>
 			    					<button type="button" class="button" (click)="addPayment(+amountOfPaymentFixed.value,utility.utilityName,dateFixed.value);modalRef.hide();amountOfPaymentFixed.value='';">Yes</button>
 			    					<button type="button" class="button" (click)="modalRef.hide();amountOfPaymentFixed.value='';">No</button>
 			    				</div>
@@ -120,10 +120,11 @@
 			    				<h4 class="modal-title">Update Confirmation</h4>
 			    				<div class="modal-body text-center">
 			    					<p>You have already did payment for this:</p>
-			    					<p>date: {{dateFixed.value}} {{currentYear}}</p>
-			    					<p>utility: {{utility.utilityName}}</p>
+			    					<p>Amount: {{paymentAmount}}$</p>
+			    					<p>Date: {{dateFixed.value}} {{currentYear}}</p>
+			    					<p>Utility: {{utility.utilityName}}</p>
 			    					<p>Are you sure about additional payment?</p>
-			    					<p>Payment amount: {{+amountOfPaymentFixed.value}}</p>
+			    					<p>Payment amount: {{+amountOfPaymentFixed.value}}$</p>
 			    					<button type="button" class="button" (click)="updatePayment(+amountOfPaymentFixed.value,utility.utilityName,dateFixed.value);modalRef.hide();amountOfPaymentFixed.value='';">Yes</button>
 			    					<button type="button" class="button" (click)="modalRef.hide();amountOfPaymentFixed.value='';">No</button>
 			    				</div>

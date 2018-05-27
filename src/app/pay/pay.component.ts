@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,TemplateRef } from '@angular/core';
+import { Component, OnInit, Input,TemplateRef} from '@angular/core';
 import {PaymentService} from '../payment.service';
 import { Payment,Tariff } from '../payment';
 import {TariffsService} from '../tariffs.service';
@@ -23,6 +23,7 @@ export class PayComponent implements OnInit {
   historyCounter:number;
   tariffs:Tariff[];
   totalCalculation=0;
+  stringTotalCalculation='';
 
   validatorVariablePaymnetAmount: boolean = false;
   validatorVariableCalculation: boolean = false;
@@ -77,13 +78,14 @@ export class PayComponent implements OnInit {
 
 
    getPaymentInformation(amountOfPayment:number,utility:string, selectedMonth: any,confirmPayment:TemplateRef<any>,confirmUpdate:TemplateRef<any>){
-    this.paymentAmount = amountOfPayment;
+    this.paymentAmount = 0;
     selectedMonth = this.getMonthNumber(selectedMonth);
     this.paymentService.getPayments().subscribe(data => {this.payments = data;
       let n=0;
       for( let key of this.payments){
         if(key.utilityName === utility && key.year===this.currentYear && key.month===selectedMonth){
           this.openModal(confirmUpdate);
+          this.paymentAmount = key.amountPayment;
         }else{
           n+=1;
           if (n===this.payments.length){
@@ -105,7 +107,6 @@ export class PayComponent implements OnInit {
           this.totalCalculation = (counterForThisMonth - key.counterForPreviousMonth) * key.tariff;
         }
       }
-      this.paymentAmount = this.totalCalculation;
     });  
   }
 
@@ -132,13 +133,26 @@ export class PayComponent implements OnInit {
   formValidationVariableCalculation(counterForThisMonth:any,utility:string){
     this.selectedUtility = utility;
     if (counterForThisMonth===0 || counterForThisMonth===null || counterForThisMonth===undefined || counterForThisMonth===''){
-      this.validatorVariableCalculation = true
+      this.validatorVariableCalculation = true;
     }else{
       if (!isNaN(counterForThisMonth)){
-        this.validatorVariableCalculation = false
+        this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
+          for (let key of this.tariffs){ 
+            if (utility === key.utilityName){
+              if(counterForThisMonth != key.counterForPreviousMonth && counterForThisMonth > key.counterForPreviousMonth){
+                this.validatorVariableCalculation = false;
+              }else{
+                this.validatorVariableCalculation = true;
+              }
+            }else{
+              this.validatorVariableCalculation = true;
+            }
+          }
+        });  
       }else{
-        this.validatorVariableCalculation = true
+        this.validatorVariableCalculation = true;
       }  
+      console.log(this.validatorVariableCalculation);
     }
     if(!this.validatorVariableCalculation){
       this.getCalculateInformation(counterForThisMonth,utility);

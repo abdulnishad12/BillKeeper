@@ -75,6 +75,7 @@ export class SettingsComponent implements OnInit {
       this.tariffsService.addTariff({ id:this.tariffs.length+1, utilityName:this.addNewUtility.value.utilityName, tariff:0, counterForPreviousMonth:0,fixedPayment: this.addNewUtility.value.fixedPrice } as Tariff)
       .subscribe(data => this.tariffs.push(data));
       this.addNewUtility.reset();
+      this.modalRef.hide();
     });
 
   }
@@ -131,7 +132,6 @@ export class SettingsComponent implements OnInit {
     if(!this.validatorFixedTariff){
       this.onSubmitNewTariff(utilityName,fixedPayment,counterAnount,tariffAmount)
     }
-    console.log(this.validatorFixedTariff);
   }
 
 
@@ -157,7 +157,6 @@ export class SettingsComponent implements OnInit {
   //Get tariffs data
   getTariffs(): void {
     this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
-      console.log(this.tariffs);
     });
   }
 
