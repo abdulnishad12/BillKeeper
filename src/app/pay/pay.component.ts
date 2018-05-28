@@ -98,86 +98,65 @@ export class PayComponent implements OnInit {
 
 
 
-  getCalculateInformation(counterForThisMonth:number , utility:string){
+  getCalculateInformation(counterForThisMonth:any , utility:string){
     this.totalCalculation = 0;
     this.selectedUtility = utility;
-    this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
-      for (let key of this.tariffs){ 
-        if (utility === key.utilityName){
-          this.totalCalculation = (counterForThisMonth - key.counterForPreviousMonth) * key.tariff;
-        }
+    for (let key of this.tariffs){ 
+      if (utility === key.utilityName){
+        this.totalCalculation = (counterForThisMonth - key.counterForPreviousMonth) * key.tariff;
       }
-    });  
+    }
+    this.formValidationVariablePayment(counterForThisMonth,utility);
+    document.getElementById("VariblePriceButton").classList.remove("cursor-off");
   }
 
 
   //Forms Validation
 
 
-  formValidationVariablePayment(amountOfPayment:any,utility:string, selectedMonth: any,confirmVariablePayment:TemplateRef<any>,confirmVariableUpdate:TemplateRef<any>){
+  formValidationVariablePayment(amountOfPayment:any,utility:string){
     this.selectedUtility = utility;
-    if (amountOfPayment===0 || amountOfPayment===null || amountOfPayment===undefined || amountOfPayment===''){
+    if (amountOfPayment.length > 5 || amountOfPayment < 0){
       this.validatorVariablePaymnetAmount = true
     }else{
-      if (!isNaN(amountOfPayment)){
-        this.validatorVariablePaymnetAmount = false
-      }else{
-        this.validatorVariablePaymnetAmount = true
-      }  
-    }
-    if(!this.validatorVariablePaymnetAmount){
-      this.getPaymentInformation(amountOfPayment,utility, selectedMonth,confirmVariablePayment,confirmVariableUpdate)
+      this.validatorVariablePaymnetAmount = false
     }
   }
 
   formValidationVariableCalculation(counterForThisMonth:any,utility:string){
     this.selectedUtility = utility;
-    if (counterForThisMonth===0 || counterForThisMonth===null || counterForThisMonth===undefined || counterForThisMonth===''){
+    if (counterForThisMonth.length > 5 || counterForThisMonth < 0){
       this.validatorVariableCalculation = true;
     }else{
-      if (!isNaN(counterForThisMonth)){
-        this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
-          for (let key of this.tariffs){ 
-            if (utility === key.utilityName){
-              if(counterForThisMonth != key.counterForPreviousMonth && counterForThisMonth > key.counterForPreviousMonth){
-                this.validatorVariableCalculation = false;
-              }else{
-                this.validatorVariableCalculation = true;
-              }
-            }else{
-              this.validatorVariableCalculation = true;
-            }
+      for (let key of this.tariffs){ 
+        if (utility === key.utilityName){
+          if(counterForThisMonth != key.counterForPreviousMonth && counterForThisMonth > key.counterForPreviousMonth){
+            this.validatorVariableCalculation = false;
+          }else{
+            this.validatorVariableCalculation = true;
           }
-        });  
-      }else{
-        this.validatorVariableCalculation = true;
-      }  
-      console.log(this.validatorVariableCalculation);
-    }
-    if(!this.validatorVariableCalculation){
-      this.getCalculateInformation(counterForThisMonth,utility);
+        }
+      }
     }
   }
 
 
-  formValidationFixedPayment(amountOfPaymentFixed:any,utility:string,selectedMonth:any,confirmFixedPayment:TemplateRef<any>,confirmFixedUpdate:TemplateRef<any>){
+  formValidationFixedPayment(amountOfPaymentFixed:any,utility:string){
     this.selectedUtility = utility;
-    if (amountOfPaymentFixed===0 || amountOfPaymentFixed===null || amountOfPaymentFixed===undefined || amountOfPaymentFixed===''){
+    if ( amountOfPaymentFixed.length > 5 || amountOfPaymentFixed < 0 ){
       this.validatorFixedPaymnetAmount = true
     }else{
-      if (!isNaN(amountOfPaymentFixed)){
-        this.validatorFixedPaymnetAmount = false
-      }else{
-        this.validatorFixedPaymnetAmount = true
-      }  
-    }
-    if(!this.validatorFixedPaymnetAmount){
-      this.getPaymentInformation(amountOfPaymentFixed,utility, selectedMonth,confirmFixedPayment,confirmFixedUpdate)
+      this.validatorFixedPaymnetAmount = false 
     }
   }
 
 
-
+  showAlert(name:string){
+    document.getElementById(name).classList.remove("hide");
+    setInterval(function() {
+      document.getElementById(name).classList.add("hide");
+    }, 3000);
+  }
 
 
 
@@ -189,13 +168,17 @@ export class PayComponent implements OnInit {
 
   getPayments(){
     this.paymentService.getPayments().subscribe(data => {this.payments = data;
-      this.historyCounter = this.payments.length;
     });
   }
 
   getTariffs(): void {
     this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
     });
+  }
+
+  deleteTariff(utilityName:number){
+    this.tariffsService.deleteTariff(utilityName).subscribe();
+    this.getTariffs();
   }
 
   openModal(template: TemplateRef<any>) {

@@ -37,6 +37,11 @@ export class TariffsService {
     return this.http.put(this.tariffUrl, tariff, httpOptions)
   };
 
+  deleteTariff (id:number): Observable<Tariff> {
+    const url = `${this.tariffUrl}/${id}`;
+    return this.http.delete<Tariff>(url, httpOptions)
+  }
+
   getUniqueUtilities(){
     this.utilities=[];
     this.getTariffs().subscribe(data => {this.tariffs = data;

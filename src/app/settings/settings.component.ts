@@ -43,7 +43,6 @@ export class SettingsComponent implements OnInit {
   }
 
   initForm(){
-
     this.addNewUtility = this.fb.group({
       utilityName: [null, [
       Validators.required,
@@ -77,7 +76,6 @@ export class SettingsComponent implements OnInit {
       this.addNewUtility.reset();
       this.modalRef.hide();
     });
-
   }
 
   // Add new tariff
@@ -93,51 +91,47 @@ export class SettingsComponent implements OnInit {
   }
 
 
-  formValidationVariable(utilityName:string,fixedPayment:boolean,counterAnount:any,tariffAmount:any){
+  formValidationVariableCounter(utilityName:string,counterAnount:any){
     this.selectedUtility = utilityName;
-    if (counterAnount===0 || counterAnount===null || counterAnount===undefined || counterAnount===''){
+    if ( counterAnount.length > 5 || counterAnount < 0){
       this.validatorVariableCounter = true
     }else{
-      if (!isNaN(counterAnount)){
-        this.validatorVariableCounter = false
-      }else{
-        this.validatorVariableCounter = true
-      }      
-    }
-    if (tariffAmount===0 || tariffAmount===null || tariffAmount===undefined || tariffAmount===''){
+      this.validatorVariableCounter = false
+    } 
+  }
+
+  formValidationVariableTariff(utilityName:string,tariffAmount:any){
+    this.selectedUtility = utilityName;
+    if (tariffAmount.length > 5 || tariffAmount < 0 ){
       this.validatorVariableTariff = true
     }else{
-      if (!isNaN(tariffAmount)){
-        this.validatorVariableTariff = false
-      }else{
-        this.validatorVariableTariff = true
-      }  
-    }
-    if(!this.validatorVariableTariff && !this.validatorVariableCounter){
-      this.onSubmitNewTariff(utilityName,fixedPayment,counterAnount,tariffAmount)
+      this.validatorVariableTariff = false
     }
   }
 
-  formValidationFixed(utilityName:string,fixedPayment:boolean,counterAnount:any,tariffAmount:any){
+  formValidationFixed(utilityName:string,tariffAmount:any){
     this.selectedUtility = utilityName;
-    if (tariffAmount===0 || tariffAmount===null || tariffAmount===undefined || tariffAmount===''){
+    if (tariffAmount.length > 5 || tariffAmount < 0){
       this.validatorFixedTariff = true
     }else{
-      if (!isNaN(tariffAmount)){
-        this.validatorFixedTariff = false
-      }else{
-        this.validatorFixedTariff = true
-      }  
+      this.validatorFixedTariff = false
     }
-    if(!this.validatorFixedTariff){
-      this.onSubmitNewTariff(utilityName,fixedPayment,counterAnount,tariffAmount)
-    }
+  }
+
+  showAlert(name:string){
+    document.getElementById(name).classList.remove("hide");
+    setInterval(function() {
+      document.getElementById(name).classList.add("hide");
+    }, 3000);
   }
 
 
 
 
-
+  deleteTariff(utilityName:number){
+    this.tariffsService.deleteTariff(utilityName).subscribe();
+    this.getTariffs();
+  }
 
 
 
@@ -157,6 +151,7 @@ export class SettingsComponent implements OnInit {
   //Get tariffs data
   getTariffs(): void {
     this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
+      console.log(this.tariffs);
     });
   }
 

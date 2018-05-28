@@ -1,5 +1,6 @@
 .pay-page-holder
-	margin-top: 50px
+	margin-top: 70px
+	position: relative
 	.pay-page-holder__content
 		display: inline-block	
 		.utility-holder--fixed
@@ -11,6 +12,7 @@
 					width: 50% 
 
 		.utility-holder
+			position: relative
 			min-height: 300px
 			text-align: center
 			background-color: #fff
@@ -44,15 +46,28 @@
 			.utility-holder__header
 				border-bottom: 1px solid #719DCA
 				margin-bottom: 20px
-				.card-title
-					width: 100%
-					text-align: left!important
-					h3			
-						font-size: 35px
-						padding-bottom: 10px
-						color: darken(#D7DADC,20%)
-						display: inline-block
-						width: 50%
+				display: flex
+				justify-content: space-between
+				align-items: center
+				width: 100%
+				margin-bottom: 25px
+				border-bottom: 1px solid #719DCA
+				button
+					outline: none
+					position: absolute
+					top: 0
+					right: 15px
+					background-color: transparent
+					border: none
+					cursor: pointer
+					height: 15px
+					width: 25px
+					span
+						font-size: 30px
+				h3
+					font-size: 35px
+					color: darken(#D7DADC,20%)!important
+					margin: 0
 			h5
 				color: darken(#D7DADC,20%)
 				font-size: 24px
@@ -75,31 +90,6 @@
 			.utility-holder__left-side
 				border-right: 1px solid #719DCA
 
-
-// .history-holder
-// 	.history-items-holder
-// 		.row
-// 			margin-bottom: 40px
-// 			background-color: #fff
-// 			padding: 20px 30px
-// 			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)
-// 			transition: 0.3s
-// 			overflow: hidden
-// 			&:hover
-// 				transition: all 0.4s ease
-// 				transform: scale(1.03)
-// 				background-color: lighten(#719DCA,15%)
-// 				h3,p,h5
-// 					transition: all 0.4s ease
-// 					color: #fff !important
-// 					.confirmation-holder
-// 						span
-// 							transition: all 0.4s ease
-// 							color: #fff !important
-// 							.history-item
-// 								text-align: center
-
-
 input.invalid
 	border: 1px solid red
 	border-radius: 3px
@@ -109,16 +99,15 @@ input.invalid
 	font-size: 12px
 	transition: all 4s ease
 	position: absolute
-	margin: 0 auto
-	margin-left: auto
-	margin-right: auto
-	left: 0
-	right: 0
+
 .hide
 	display: none
 
 .show
 	display: block
+
+.cursor-off
+	pointer-events: none;
 
 .modal-title
 	padding: 10px 20px
@@ -131,4 +120,12 @@ input.invalid
 		width: 120px
 		&:hover
 			width: 120px
+
+alert 
+	position: fixed
+	width: 600px
+	left: 50%
+	transform: translateX(-50%)
+	top: 65px
+	text-align: center
 		

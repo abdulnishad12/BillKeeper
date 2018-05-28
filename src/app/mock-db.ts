@@ -18,10 +18,11 @@ export class InMemoryDataService implements InMemoryDbService {
     ];
 
     const tariffs =[
-      { id:1, utilityName: 'Gas', tariff:0, counterForPreviousMonth:0,fixedPayment:false},
+      { id:1, utilityName: 'Gas', tariff:50, counterForPreviousMonth:50,fixedPayment:false},
       { id:2, utilityName: 'Light', tariff:0, counterForPreviousMonth:0,fixedPayment:false},
       { id:3, utilityName: 'Water', tariff:0, counterForPreviousMonth:0,fixedPayment:false},
       { id:4, utilityName: 'Trash', tariff:0, counterForPreviousMonth:0,fixedPayment:true},
+      { id:5, utilityName: 'Milk', tariff:0, counterForPreviousMonth:0,fixedPayment:true},
     ];
   return {payments,tariffs};
   }

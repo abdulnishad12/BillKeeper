@@ -7,9 +7,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './mock-db';
 
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { ModalModule } from 'ngx-bootstrap';
+import { ModalModule,PopoverModule,AlertModule,BsDatepickerModule } from 'ngx-bootstrap';
+
 
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -43,6 +42,8 @@ import { PaymentService } from './payment.service';
     AlertModule.forRoot(),
     ModalModule.forRoot(),
     ReactiveFormsModule,
+    PopoverModule.forRoot(),
+    
   ],
   providers: [PaymentService],
   bootstrap: [AppComponent]
