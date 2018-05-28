@@ -15,7 +15,6 @@
 				    </div>
 
 			    	<div class="row utility-holder-content"> 
-
 				      <div class="utility-holder-content__left-side col-6">
 
 				      	<h5>Direct Payment</h5>
@@ -23,7 +22,7 @@
 				        <input #amountOfPaymentVariable (keyup) = "formValidationVariablePayment(amountOfPaymentVariable.value,utility.utilityName);" placeholder="Enter Payment Amount"  [value]="totalCalculation!=0 && selectedUtility===utility.utilityName ? totalCalculation : ''"  class="form-control" [ngClass]="{'invalid': validatorVariablePaymnetAmount && selectedUtility===utility.utilityName }" type="number" >
 
 				        <div class="error" [ngClass]="{ 'show': validatorVariablePaymnetAmount && selectedUtility===utility.utilityName,'hide': !(validatorVariablePaymnetAmount && selectedUtility===utility.utilityName) }">
-				        	Only numbers allow
+				        	Only five-digit positive number allowed
 				        </div>
 
 			        	<div class="datepicker">
@@ -35,19 +34,23 @@
 			    			</div>
 
 			    			<ng-template #confirmVariablePayment>
-			    				<h4 class="modal-title">Payment Confirmation</h4>
+			    				<div class="modal-header">
+			    					<h4 class="modal-title">Payment Confirmation</h4>
+			    				</div>
 			    				<div class="modal-body text-center">
 			    					<p>Are you sure about this payment?</p>
 			    					<p>Date: {{dateVariable.value}} {{currentYear}}</p>
 										<p>Utility: {{utility.utilityName}}</p>
 			    					<p>Payment amount: {{+amountOfPaymentVariable.value}}$</p>
-			    					<button type="button" class="button" (click)="addPayment(+amountOfPaymentVariable.value,utility.utilityName,dateVariable.value);modalRef.hide();amountOfPaymentVariable.value='';">Yes</button>
+			    					<button type="button" class="button" (click)="addPayment(+amountOfPaymentVariable.value,utility.utilityName,dateVariable.value);modalRef.hide();amountOfPaymentVariable.value='';showAlert('successAddNewPayment');">Yes</button>
 			    					<button type="button" class="button" (click)="modalRef.hide();amountOfPaymentVariable.value='';">No</button>
 			    				</div>
 			    			</ng-template>
 
 			    			<ng-template #confirmVariableUpdate>
-			    				<h4 class="modal-title">Update Confirmation</h4>
+			    				<div class="modal-header">
+			    					<h4 class="modal-title">Update Confirmation</h4>
+			    				</div>
 			    				<div class="modal-body text-center">
 			    					<p>You have already did payment for this:</p>
 			    					<p>Amount: {{paymentAmount}}$</p>
@@ -55,7 +58,7 @@
 										<p>Utility: {{utility.utilityName}}</p>
 			    					<p>Are you sure about additional payment?</p>
 			    					<p>Payment amount: {{+amountOfPaymentVariable.value}}$</p>
-			    					<button type="button" class="button" (click)="updatePayment(+amountOfPaymentVariable.value,utility.utilityName,dateVariable.value);modalRef.hide();amountOfPaymentVariable.value='';">Yes</button>
+			    					<button type="button" class="button" (click)="updatePayment(+amountOfPaymentVariable.value,utility.utilityName,dateVariable.value);modalRef.hide();amountOfPaymentVariable.value='';showAlert('successUpdatePayment');">Yes</button>
 			    					<button type="button" class="button" (click)="modalRef.hide();amountOfPaymentVariable.value='';">No</button>
 			    				</div>
 			    			</ng-template>
@@ -67,15 +70,21 @@
 
 				      	<h5>Calculation</h5>
 
-				      	<input class="form-control" (keyup) = "formValidationVariableCalculation(counterForThisMonth.value,utility.utilityName);" [ngClass]="{'invalid': validatorVariableCalculation && selectedUtility===utility.utilityName }" type="number" placeholder="Enter counter amount" #counterForThisMonth 
-				      	popover="Tariff: {{utility.tariff}} Start Counter: {{utility.counterForPreviousMonth}}" 
-				      	popoverTitle="Tariff for utility"
+				      	<input class="form-control" 
+				      	(keyup) = "formValidationVariableCalculation(counterForThisMonth.value,utility.utilityName);" 
+				      	[ngClass]="{'invalid': validatorVariableCalculation && selectedUtility===utility.utilityName }" 
+				      	type="number" placeholder="Enter counter amount" #counterForThisMonth 
+				      	[popover]="counterForThisMonthHelp"
+				      	popoverTitle="Tariff for utility: {{utility.utilityName}}"
 				      	triggers="focus"
 				      	>
+				      	<ng-template #counterForThisMonthHelp>
+								Tariff: {{utility.tariff}}<br>
+								Start Counter: {{utility.counterForPreviousMonth}}
+				      	</ng-template>
 				      	<div class="error" [ngClass]="{ 'show': validatorVariableCalculation && selectedUtility===utility.utilityName,'hide': !(validatorVariableCalculation && selectedUtility===utility.utilityName) }">
-				        	Only numbers allow
+				        	Must be greater than Start Counter
 				        </div>
-
 				      	<div class="total-holder">
 					      	<p>Total:</p>
 					      	<span *ngIf="selectedUtility===utility.utilityName">{{totalCalculation}}</span>
@@ -116,19 +125,23 @@
 			    			</div>
 
 			    			<ng-template #confirmFixedPayment>
-			    				<h4 class="modal-title">Payment Confirmation</h4>
+			    				<div class="modal-header">
+			    					<h4 class="modal-title">Payment Confirmation</h4>
+			    				</div>
 			    				<div class="modal-body text-center">
 			    					<p>Are you sure about this payment?</p>
 			    					<p>Date: {{dateFixed.value}} {{currentYear}}</p>
 										<p>Utility: {{utility.utilityName}}</p>
 			    					<p>Payment amount: {{+amountOfPaymentFixed.value}}$</p>
-			    					<button type="button" class="button" (click)="addPayment(+amountOfPaymentFixed.value,utility.utilityName,dateFixed.value);modalRef.hide();amountOfPaymentFixed.value='';showAlert('successAlert');">Yes</button>
+			    					<button type="button" class="button" (click)="addPayment(+amountOfPaymentFixed.value,utility.utilityName,dateFixed.value);modalRef.hide();amountOfPaymentFixed.value='';showAlert('successAddNewPayment');">Yes</button>
 			    					<button type="button" class="button" (click)="modalRef.hide();amountOfPaymentFixed.value='';showAlert('cancelAlert')">No</button>
 			    				</div>
 			    			</ng-template>
 
 			    			<ng-template #confirmFixedUpdate>
-			    				<h4 class="modal-title">Update Confirmation</h4>
+			    				<div class="modal-header">
+			    					<h4 class="modal-title">Update Confirmation</h4>
+			    				</div>
 			    				<div class="modal-body text-center">
 			    					<p>You have already did payment for this:</p>
 			    					<p>Amount: {{paymentAmount}}$</p>
@@ -136,10 +149,16 @@
 			    					<p>Utility: {{utility.utilityName}}</p>
 			    					<p>Are you sure about additional payment?</p>
 			    					<p>Payment amount: {{+amountOfPaymentFixed.value}}$</p>
-			    					<button type="button" class="button" (click)="updatePayment(+amountOfPaymentFixed.value,utility.utilityName,dateFixed.value);modalRef.hide();amountOfPaymentFixed.value='';showAlert('updateAlert')">Yes</button>
+			    					<button type="button" class="button" (click)="updatePayment(+amountOfPaymentFixed.value,utility.utilityName,dateFixed.value);modalRef.hide();amountOfPaymentFixed.value='';showAlert('successUpdatePayment')">Yes</button>
 			    					<button type="button" class="button" (click)="modalRef.hide();amountOfPaymentFixed.value='';showAlert('cancelAlert');">No</button>
 			    				</div>
 			    			</ng-template>
+			    			<alert type="success" class="hide" id="successAddNewPayment">
+			    				<strong>Success!</strong> You successfully add new paymnet.
+			    			</alert>
+			    			<alert type="info" class="hide" id="successUpdatePayment">
+			    				<strong>Success!</strong> You successfully update paymnet.
+			    			</alert>
 
 			    			<button type="submit" class="button" [ngClass]="{'cursor-off': validatorFixedPaymnetAmount || amountOfPaymentFixed.value == '' ||  amountOfPaymentFixed.value== 0 }" (click) = "getPaymentInformation(+amountOfPaymentFixed.value,utility.utilityName,dateFixed.value,confirmFixedPayment,confirmFixedUpdate);">Pay</button>
 
@@ -163,14 +182,5 @@
 		  </div>
 
 		</div>
-		<alert type="success" class="hide" id="successAlert">
-			<strong>Well done!</strong> You successfully add new payment.
-		</alert>
-		<alert type="info" class="hide" id="updateAlert">
-			<strong>Well done!</strong>  You successfully update payment.
-		</alert>
-		<alert type="danger" class="hide" id="cancelAlert">
-			<strong>Oh snap!</strong> You have canceled adding payment.
-		</alert>
 	</div>
 </section>

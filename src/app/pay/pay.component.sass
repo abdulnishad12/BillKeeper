@@ -24,6 +24,9 @@
 				transition: all 0.4s ease
 				transform: scale(1.03)
 				background-color: lighten(#719DCA,15%)
+				.utility-holder__header
+					h3
+						color: #fff !important	
 				h3,p,h5
 					transition: all 0.4s ease
 					color: #fff !important
@@ -65,7 +68,7 @@
 					span
 						font-size: 30px
 				h3
-					font-size: 35px
+					font-size: 32px
 					color: darken(#D7DADC,20%)!important
 					margin: 0
 			h5
@@ -109,9 +112,6 @@ input.invalid
 .cursor-off
 	pointer-events: none;
 
-.modal-title
-	padding: 10px 20px
-	border-bottom: 1px solid #719DCA
 .modal-body
 	padding: 10px 20px
 	margin: 20px 0 10px 0
@@ -121,11 +121,3 @@ input.invalid
 		&:hover
 			width: 120px
 
-alert 
-	position: fixed
-	width: 600px
-	left: 50%
-	transform: translateX(-50%)
-	top: 65px
-	text-align: center
-		

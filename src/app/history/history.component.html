@@ -10,29 +10,29 @@
 		<div class="history-page-holder__content">
 			<div class="row">
 			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5" *ngFor="let key of historyDisplay">
-			  	<h3 class="card-title">{{ key.month | month }}</h3>
 					<div class="utility-holder">
-						<div class="row">    		
+						<div class="row"> 
+							<h3 class="card-title col-12">{{ key.month | month }}</h3>
 							<div class="utility-holder__left-side col-6">
 								<h5>Utilities</h5>
 								<ul>
-									<div class="if-holder" *ngFor = "let i of key.payments">
-										<li><span>{{i.utilityName}}</span></li>
+									<div class="if-holder" >
+										<li *ngFor = "let i of key.payments">{{i.utilityName}}</li>
+										<li>All</li>
 									</div>
-								</ul>
+								</ul>	
 							</div>
 							<div class="utility-holder__right-side col-6">
 								<h5>Total</h5>
 								<ul>
-									<div class="if-holder" *ngFor = "let i of key.payments">
-										<li><span>{{i.amountPayment}}</span></li>
+									<div class="if-holder" >
+										<li *ngFor = "let i of key.payments">{{i.amountPayment}}</li>
+										<div class="if-holder" *ngFor="let u of totalByMonth">
+											<li *ngIf="key.month===u.month">{{u.totalOfMonth}}</li>
+										</div>		
 									</div>
 								</ul>	
 							</div>
-						</div>
-						<div class="total-holder" *ngFor="let u of totalByMonth">
-							<p *ngIf="key.month===u.month">Total</p>
-							<span *ngIf="key.month===u.month">{{u.totalOfMonth}}</span>
 						</div>
 					</div>
 			  </div>

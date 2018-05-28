@@ -2,8 +2,10 @@
 	display: inline-block
 	width: 100%
 	.utility-holder
-		min-height: 250px
-		text-align: center
+		overflow: auto
+		min-height: 330px
+		max-height: 330px
+		text-align: left
 		background-color: #fff
 		padding: 20px 30px
 		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)
@@ -13,6 +15,7 @@
 			transition: all 0.4s ease
 			transform: scale(1.03)
 			background-color: lighten(#719DCA,15%)
+			
 			h3,p,h5
 				transition: all 0.4s ease
 				color: #fff !important
@@ -20,13 +23,12 @@
 				span
 					transition: all 0.4s ease
 					color: #fff !important
-
 		ul
 			list-style-type: none
 			li
-				text-align: right
+				text-align: left
 				margin-right: 80px
-				margin-bottom: 7px
+				margin-bottom: 14px
 		h3
 			text-align: left
 			font-size: 35px
@@ -41,15 +43,7 @@
 			margin-bottom: 15px
 		.utility-holder__left-side
 			border-right: 1px solid #719DCA
-		.total-holder
-			text-align: right
-			margin: 0 10% 0 67%
-			.if-holder
-				border-top: 1px solid #719DCA
-			p
-				
-				margin: 10px 27px 0 0
-				display: inline-block
+			height: 100%
 			
 .history-page-holder__nav
 	display: inline-block

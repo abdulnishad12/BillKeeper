@@ -13,12 +13,6 @@
 		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)
 	  transition: 0.3s
 	  overflow: hidden
-		&:hover,&:active
-			transition: all 0.4s ease
-			transform: scale(1.03)
-			background-color: lighten(#719DCA,15%)
-			h3
-				color: #fff
 		.utility-tariffs__header
 			display: flex
 			justify-content: space-between
@@ -42,6 +36,7 @@
 				font-size: 35px
 				color: darken(#D7DADC,20%)!important
 				margin: 0
+				margin-bottom: 5px
 		.utility-tariffs-content
 			margin-top: 45px
 			.button
@@ -51,9 +46,15 @@
 			text-align: left
 			border-right: 1px solid #719DCA
 		.utility-tariffs__data-holder
-			text-align: left
+			padding: 0 30px
+			margin-top: 10px
+			.utility-tariffs__data-holder--item
+				p
+					display: flex
+					justify-content: space-between
+				&:nth-child(2)
+					margin-top: 30px
 			p
-				margin-bottom: 30px
 			padding-top: 15px
 		h5
 			color: darken(#D7DADC,20%)
@@ -122,11 +123,4 @@ input.invalid
 .cursor-off
 	pointer-events: none;
 
-alert 
-	position: fixed
-	width: 600px
-	left: 50%
-	transform: translateX(-50%)
-	top: 65px
-	text-align: center
 

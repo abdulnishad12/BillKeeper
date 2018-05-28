@@ -35,7 +35,7 @@ export class PayComponent implements OnInit {
 
 
 
-  constructor(private paymentService: PaymentService, private tariffsService: TariffsService,private modalService: BsModalService) { }
+  constructor(private paymentService: PaymentService, private tariffsService: TariffsService, private modalService: BsModalService) { }
 
   ngOnInit() {
     this.getTariffs();
