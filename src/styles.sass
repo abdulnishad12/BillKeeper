@@ -40,6 +40,25 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
   -webkit-appearance: none 
   margin: 0 
 
+input.invalid
+	border: 1px solid red
+	border-radius: 3px
+	
+.error
+	color: red
+	font-size: 12px
+	transition: all 4s ease
+	position: absolute
+
+.hide
+	display: none
+
+.show
+	display: block
+
+.cursor-off
+	pointer-events: none;
+	
 alert 
 	position: fixed
 	width: 600px

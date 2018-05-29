@@ -3,14 +3,6 @@
 	position: relative
 	.pay-page-holder__content
 		display: inline-block	
-		.utility-holder--fixed
-			.utility-holder-content__left-side		
-				text-align: center
-				border-right: none
-				input
-					margin: 15px auto 0 auto
-					width: 50% 
-
 		.utility-holder
 			position: relative
 			min-height: 300px
@@ -48,7 +40,7 @@
 
 			.utility-holder__header
 				border-bottom: 1px solid #719DCA
-				margin-bottom: 20px
+				padding-bottom: 10px
 				display: flex
 				justify-content: space-between
 				align-items: center
@@ -93,31 +85,38 @@
 			.utility-holder__left-side
 				border-right: 1px solid #719DCA
 
-input.invalid
-	border: 1px solid red
-	border-radius: 3px
-	
-.error
-	color: red
-	font-size: 12px
-	transition: all 4s ease
-	position: absolute
+		.utility-holder--fixed
+			.utility-holder-content__left-side		
+				text-align: center
+				border-right: none
+				input
+					margin: 15px auto 0 auto
+					width: 50% 
 
-.hide
-	display: none
 
-.show
+.modal-body,.modal-footer
+	padding: 15px 35px
+	margin: 15px 0 10px 0
 	display: block
-
-.cursor-off
-	pointer-events: none;
-
-.modal-body
-	padding: 10px 20px
-	margin: 20px 0 10px 0
+	h6
+		font-weight: bold
+		margin-bottom: 20px
+	.detail-item
+		padding: 0 40px
+		p
+			display: inline-block
+			width: 100%
+			text-align: right
+			margin-bottom: 7px
 	button
-		margin: 15px 10px 0 10px
+		margin: 30px 10px 0 10px
 		width: 120px
 		&:hover
 			width: 120px
 
+.modal-footer
+	padding-top: 30px
+	margin-top: 0
+
+.calculation-helper
+	padding: 15px 5px

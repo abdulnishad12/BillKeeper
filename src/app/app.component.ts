@@ -1,5 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
-import { PaymentService } from './payment.service';
+import { Component } from '@angular/core';
 import { setTheme } from 'ngx-bootstrap/utils';
 
 
@@ -10,22 +9,8 @@ import { setTheme } from 'ngx-bootstrap/utils';
 })
 export class AppComponent {
 
-
-
-	constructor(private paymentService: PaymentService){
-		setTheme('bs4');
-	}
-
-	ngOnInit() {
-
+  constructor() {
+    setTheme('bs4');
   }
-
-
-
-  
-
-
-
-
   title = 'BillKeeper';
 }

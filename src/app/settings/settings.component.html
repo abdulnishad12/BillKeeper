@@ -18,8 +18,13 @@
 					</div>
 								
 					<div class="row">
-						<div class="utility-tariffs__input-holder col-6">				
-							<input type="number" class="form-control" (keyup) = "formValidationVariableCounter(utility.utilityName,counterAmount.value);" [ngClass]="{'invalid': validatorVariableCounter && selectedUtility===utility.utilityName }" placeholder="Start counter amount" #counterAmount> 
+						<div class="utility-tariffs__input-holder col-6">			
+
+							<input type="number" class="form-control" 
+							(keyup) = "formValidationVariableCounter(utility.utilityName,counterAmount.value);" 
+							[ngClass]="{'invalid': validatorVariableCounter && selectedUtility===utility.utilityName }" 
+							placeholder="Previous Counter" #counterAmount> 
+
 							<div class="error"  [ngClass]="{ 'show': validatorVariableCounter && selectedUtility===utility.utilityName,'hide': !(validatorVariableCounter && selectedUtility===utility.utilityName) }">
 								Only five-digit positive number allowed
 							</div>
@@ -30,7 +35,7 @@
 						</div>
 						<div class="utility-tariffs__data-holder col-6">	
 							<div class="utility-tariffs__data-holder--item">
-								<p>Previous Month: <span>{{utility.counterForPreviousMonth}}</span></p>
+								<p>Previous Counter: <span>{{utility.counterForPreviousMonth}}</span></p>
 							</div>
 							<div class="utility-tariffs__data-holder--item">
 								<p>Tariff: <span>{{utility.tariff}}</span></p>

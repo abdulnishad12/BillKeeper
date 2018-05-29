@@ -18,7 +18,7 @@
 								<ul>
 									<div class="if-holder" >
 										<li *ngFor = "let i of key.payments">{{i.utilityName}}</li>
-										<li>All</li>
+										<li><strong>All</strong></li>
 									</div>
 								</ul>	
 							</div>
@@ -28,7 +28,7 @@
 									<div class="if-holder" >
 										<li *ngFor = "let i of key.payments">{{i.amountPayment}}</li>
 										<div class="if-holder" *ngFor="let u of totalByMonth">
-											<li *ngIf="key.month===u.month">{{u.totalOfMonth}}</li>
+											<li *ngIf="key.month===u.month"><strong>{{u.totalOfMonth}}</strong></li>
 										</div>		
 									</div>
 								</ul>	
