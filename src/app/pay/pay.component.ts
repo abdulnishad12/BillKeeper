@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef} from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 
 import { Payment, Tariff } from '../payment';
 
@@ -9,12 +9,16 @@ import { ValidationService } from '../validation.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
+
+
 @Component({
   selector: 'app-pay',
   templateUrl: './pay.component.html',
   styleUrls: ['./pay.component.sass']
 })
 export class PayComponent implements OnInit {
+
+  @ViewChild('newUserModalHelper') newUserModalHelper: any;
 
   modalRef: BsModalRef;
 
@@ -30,6 +34,7 @@ export class PayComponent implements OnInit {
   validatorFixedPaymentAmount = false;
 
 
+
   currentYear = new Date().getFullYear();
   currentMonth = new Date().getMonth();
 
@@ -40,6 +45,16 @@ export class PayComponent implements OnInit {
   ngOnInit() {
     this.getTariffs();
     this.getPayments();
+    this.newUserModalHelperMethod();
+  }
+
+
+  newUserModalHelperMethod(){
+    this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
+      if (this.tariffs.length === 0) {
+        this.openModal(this.newUserModalHelper)
+      }
+    });
   }
 
   updatePayment(amountOfPayment: number, utility: string, selectedMonth: any) {
@@ -113,17 +128,6 @@ export class PayComponent implements OnInit {
   }
 
 
-  
-
-
-  
-
-
-
-
-
-
-
   // Http Methods
 
   getPayments() {
@@ -138,7 +142,7 @@ export class PayComponent implements OnInit {
 
   // Open Modal Window
 
-  openModal(template: TemplateRef<any>) {
+  openModal(template: TemplateRef <any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-md'});
   }
 
@@ -164,8 +168,8 @@ export class PayComponent implements OnInit {
   }
 
   formValidationVariableCalculation(counterForThisMonth: string, utility: string) {
-    this.selectedUtility = utility; 
-    this.validatorVariableCalculation = this.validationService.formValidationLengthPositivePreviousCounterLargerThanCurrent(counterForThisMonth,utility)
+    this.selectedUtility = utility;
+    this.validatorVariableCalculation = this.validationService.formValidationPreviousCounterLargerThanCurrent(counterForThisMonth,utility)
   }
 
 

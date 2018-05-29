@@ -27,45 +27,35 @@ export class ValidationService {
 	}
 
 	formValidationLengthAndPositive(validateInput: string, ){
-		if (validateInput.length > this.maxLengthOfInput || +validateInput < 0 ) {
-      return true;
-    } else {
-      return false;
-    }
+		return validateInput.length > this.maxLengthOfInput || +validateInput < 0 );
 	}
 
-	formValidationNoReapeatAndOnlyNumbers(validateInput:string){
-		if (isNaN(+validateInput)) {
-			let i = 0;
-			for (const key of this.tariffs) {
-				i += 1;
-				if (key.utilityName.toLowerCase() === validateInput.toLowerCase()) {
-					return true;
-				} else if (i === this.tariffs.length) {
-					return false;
-				}
-			}
-		} else {
+	formValidationUniqueAndOnlyChars(validateInput:string, tariffsArray:any){
+		if (!/^[a-zA-Z]+$/.test(validateInput)) {
 			return true;
 		}
+		for (const key of tariffsArray) {
+			if (key.utilityName.toLowerCase() === validateInput.toLowerCase()) {
+				return true;
+			}
+		} 
+		return false;
 	}
 
-	formValidationLengthPositivePreviousCounterLargerThanCurrent(validateInput:string,compareUtilityName: string){
+	formValidationPreviousCounterLargerThanCurrent(validateInput:string,compareUtilityName: string){
 		if (validateInput.length > this.maxLengthOfInput || +validateInput < 0){
 			return true;
-		} else {
-			for (const key of this.tariffs) {
-				if (compareUtilityName === key.utilityName) {
-					if (+validateInput !== key.counterForPreviousMonth && +validateInput > key.counterForPreviousMonth) {
-						if(key.tariff === 0){
-							return true;
-						}else{
-							return false;
-						}
+		} 
+		for (const key of this.tariffs) {
+			if (compareUtilityName === key.utilityName) {
+				if (+validateInput !== key.counterForPreviousMonth && +validateInput > key.counterForPreviousMonth) {
+					if(key.tariff != 0){
+						return false;
 					}
 				}
 			}
 		}
+		return true
 	}
 
 	getTariffs(){

@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { PaymentService } from '../payment.service';
 import { TariffsService } from '../tariffs.service';
@@ -21,6 +21,7 @@ export class SettingsComponent implements OnInit {
   selectedUtility: string;
 
   modalRef: BsModalRef;
+  newFixedPrice = false;
 
   // Validation variable
   validatorVariableCounter = false;
@@ -33,20 +34,35 @@ export class SettingsComponent implements OnInit {
 
   constructor(private paymentService: PaymentService, private tariffsService: TariffsService, private modalService: BsModalService, private validationService: ValidationService) { }
 
+  @ViewChild('addNewUtilityModal') addNewUtilityModal: any;
+
   ngOnInit() {
     this.getTariffs();
+    this.newUserModalHelperMethod();
+  }
+
+  // Open Help Window if utility array clear
+
+  newUserModalHelperMethod(){
+    this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
+      if (this.tariffs.length === 0) {
+        this.openModal(this.addNewUtilityModal)
+      }
+    });
   }
 
 
   // Add new utility
 
   onSubmitnewUtility(newUtilityName: string, fixedOrVariableCheakbox: boolean) {
-    this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;this.tariffs[this.tariffs.length]
-      this.tariffsService.addTariff({ id: this.tariffs.slice(-1)[0].id + 1, utilityName: newUtilityName, tariff: 0, counterForPreviousMonth: 0, fixedPayment: fixedOrVariableCheakbox } as Tariff)
-      .subscribe(data => this.tariffs.push(data));
-    });
+      if (this.tariffs.length != 0){
+        this.tariffsService.addTariff({ id: this.tariffs.slice(-1)[0].id + 1, utilityName: newUtilityName, tariff: 0, counterForPreviousMonth: 0, fixedPayment: fixedOrVariableCheakbox } as Tariff)
+        .subscribe(data => this.tariffs.push(data));
+      }else{
+        this.tariffsService.addTariff({ id: 1, utilityName: newUtilityName, tariff: 0, counterForPreviousMonth: 0, fixedPayment: fixedOrVariableCheakbox } as Tariff)
+        .subscribe(data => this.tariffs.push(data));
+      }    
     this.modalRef.hide();
-    this.getTariffs();
   }
 
   // Add new tariff
@@ -55,9 +71,10 @@ export class SettingsComponent implements OnInit {
     for (const key of this.tariffs) {
       if (key.utilityName === utilityName) {
         this.tariffsService.updateTariff({id: key.id, utilityName: key.utilityName, tariff: tariffAmount, counterForPreviousMonth: counterAnount, fixedPayment: key.fixedPayment}).subscribe();
+        key.counterForPreviousMonth = counterAnount;
+        key.tariff = tariffAmount;
       }
      }
-     this.getTariffs();
   }
 
   // Http methods
@@ -105,7 +122,7 @@ export class SettingsComponent implements OnInit {
   }
 
   formValidationNewUtility(newUtilityName: string) {
-   this.validatorNewUtility = this.validationService.formValidationNoReapeatAndOnlyNumbers(newUtilityName);
+   this.validatorNewUtility = this.validationService.formValidationUniqueAndOnlyChars(newUtilityName,this.tariffs);
   }
 
 

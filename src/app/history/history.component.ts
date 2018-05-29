@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef} from '@angular/core';
 
 import {PaymentService} from '../payment.service';
 import { Payment, PaymentByMonth } from '../payment';
+
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 @Component({
   selector: 'app-history',
@@ -10,20 +13,32 @@ import { Payment, PaymentByMonth } from '../payment';
 })
 export class HistoryComponent implements OnInit {
 
-  public paymentByYear: Payment[];
-  public payments: Payment[];
+  paymentByYear: Payment[];
+  payments: Payment[];
   selectedYear = new Date().getFullYear();
-  public years = [];
-  public months = [];
-  public historyDisplay: PaymentByMonth[] = [];
-  public totalByMonth = [];
+  years = [];
+  months = [];
+  historyDisplay: PaymentByMonth[] = [];
+  totalByMonth = [];
+  modalRef: BsModalRef;
+
+  @ViewChild('newUserModalHelper') newUserModalHelper: any;
 
 
-  constructor(private paymentService: PaymentService) { }
+  constructor(private paymentService: PaymentService, private modalService: BsModalService) { }
 
   ngOnInit() {
     this.getPaymentByYear();
     this.getPayment();
+    this.newUserModalHelperMethod();
+  }
+
+  newUserModalHelperMethod(){
+    this.paymentService.getPayments().subscribe(data => {this.payments = data;
+      if (this.payments.length === 0) {
+        this.openModal(this.newUserModalHelper)
+      }
+    });
   }
 
   yearsOrder(a, b) {
@@ -38,7 +53,6 @@ export class HistoryComponent implements OnInit {
 
   getPaymentByYear(): void {
     this.paymentService.getPaymentsByYear(this.selectedYear).subscribe(data => {this.paymentByYear = data;
-
       // Find unique Months in DB for selected year
       this.months = [];
       for (const key of this.paymentByYear) {
@@ -81,7 +95,6 @@ export class HistoryComponent implements OnInit {
   }
 
   getPayment(): void {
-
     // Find unique Years in DB
     this.paymentService.getPayments().subscribe(data => {this.payments = data;
       for (const i of this.payments) {
@@ -95,6 +108,13 @@ export class HistoryComponent implements OnInit {
       }
       this.years.sort(this.yearsOrder);
     });
+    if (this.years.length === 0 ){
+      this.years.push(this.selectedYear);
+    }
+  }
+
+  openModal(template: TemplateRef <any>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-md'});
   }
 
 

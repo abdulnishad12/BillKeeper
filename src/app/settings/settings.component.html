@@ -6,8 +6,7 @@
 
 	<div class="utility-tariffs">
 		<div class="row">
-			<div class="col-lg-6 mb-4" *ngFor="let utility of tariffs;">
-
+			<div class="col-lg-6 mb-4 animated zoomIn" *ngFor="let utility of tariffs;">
 				<!-- Variable Price Utility -->
 				<div class="utility-tariffs__item" *ngIf = "utility.fixedPayment===false">
 					<div class="utility-tariffs__header">
@@ -28,7 +27,12 @@
 							<div class="error"  [ngClass]="{ 'show': validatorVariableCounter && selectedUtility===utility.utilityName,'hide': !(validatorVariableCounter && selectedUtility===utility.utilityName) }">
 								Only five-digit positive number allowed
 							</div>
-							<input type="number" class="form-control" (keyup) = "formValidationVariableTariff(utility.utilityName,tariffAmount.value);" [ngClass]="{'invalid': validatorVariableTariff && selectedUtility===utility.utilityName }" placeholder="Utility tariff" #tariffAmount>	
+
+							<input type="number" class="form-control" 
+							(keyup) = "formValidationVariableTariff(utility.utilityName,tariffAmount.value);" 
+							[ngClass]="{'invalid': validatorVariableTariff && selectedUtility===utility.utilityName }" 
+							placeholder="Utility tariff" #tariffAmount>	
+
 							<div class="error" [ngClass]="{ 'show': validatorVariableTariff && selectedUtility===utility.utilityName,'hide': !(validatorVariableTariff && selectedUtility===utility.utilityName) }">
 								Only five-digit positive number allowed
 							</div>
@@ -42,7 +46,9 @@
 							</div>				
 						</div>
 					</div>
-					<button type ="submit" class="button" [ngClass]="{'cursor-off': validatorVariableTariff || validatorVariableCounter || counterAmount.value =='' || tariffAmount.value==''|| counterAmount.value==0 ||  tariffAmount.value==0 }"  (click) = "onSubmitNewTariff(utility.utilityName,utility.fixedPayment,+counterAmount.value,+tariffAmount.value);">Submit</button>	
+					<button type ="submit" class="button" 
+					[ngClass]="{'cursor-off': validatorVariableTariff || validatorVariableCounter || counterAmount.value =='' || tariffAmount.value==''|| counterAmount.value==0 ||  tariffAmount.value==0 }"  
+					(click) = "onSubmitNewTariff(utility.utilityName,utility.fixedPayment,+counterAmount.value,+tariffAmount.value);tariffAmount.value='';counterAmount.value ='';">Submit</button>	
 				</div>
 
 				<!-- Fixed Price Utility -->
@@ -97,7 +103,11 @@
 		<div class="modal-body">
 			<div class="modal-body__header">
 				<span>Utility name:</span>
-				<input [ngClass]="{'invalid': validatorNewUtility}" placeholder="Enter utility Name" [(ngModel)]="newUtilityName" (keyup) = "formValidationNewUtility(newUtilityName);" #test> 
+				
+				<input [ngClass]="{'invalid': validatorNewUtility}" 
+				placeholder="Enter utility Name" 
+				[(ngModel)]="newUtilityName" (keyup) = "formValidationNewUtility(newUtilityName);" #test> 
+				
 				<div class="error" [ngClass]="{ 'show': validatorNewUtility,'hide': !validatorNewUtility }">
 					<p>Only letter and dash alllow</p>
 				</div>

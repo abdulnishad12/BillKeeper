@@ -4,7 +4,7 @@
 		<div class="pay-page-holder__content">
 			<div class="row">
 
-			  <div class="col-lg-6 mb-5" *ngFor="let utility of tariffs">
+			  <div class="col-6 mb-5 animated zoomIn" *ngFor="let utility of tariffs">
 			    <div class="utility-holder utility-holder--variable" *ngIf = "utility.fixedPayment===false">
 
 			    	<div class="utility-holder__header">
@@ -99,7 +99,7 @@
 					      	<span *ngIf="selectedUtility!=utility.utilityName">{{0}}</span>
 				      	</div>
 
-				      	<button type="submit" class="button" [ngClass]="{'cursor-off': validatorVariableCalculation || counterForThisMonth.value =='' ||  counterForThisMonth.value==0 }" (click) = "getCalculateInformation(+counterForThisMonth.value,utility.utilityName);">Calculate</button>
+				      	<button type="submit" class="button" [ngClass]="{'cursor-off': validatorVariableCalculation || counterForThisMonth.value =='' ||  counterForThisMonth.value==0 }" (click) = "getCalculateInformation(+counterForThisMonth.value,utility.utilityName);counterForThisMonth.value='';">Calculate</button>
 				      </div>
 			      </div>
 
@@ -195,5 +195,17 @@
 		  </div>
 
 		</div>
+
+		<ng-template  #newUserModalHelper>
+			<div class="modal-header">
+				<h4 class="modal-title">You haven't added any utilities yet</h4>
+			</div>
+			<div class="modal-body text-center">
+				<span class="text-center">Do you want to add new utility?</span><br>
+				<button type="button" class="button" routerLink="/settings" (click)="modalRef.hide();">Yes</button>
+				<button type="button" class="button" (click)="modalRef.hide();">No</button>
+			</div>
+		</ng-template>
+
 	</div>
 </section>

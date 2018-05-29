@@ -22,6 +22,7 @@
     "@angular/router": "^6.0.0",
     "angular-bootstrap-datetimepicker": "^2.2.1",
     "angular-in-memory-web-api": "^0.6.0",
+    "animate.css": "^3.6.1",
     "bootstrap": "^4.1.1",
     "core-js": "^2.5.4",
     "moment": "^2.22.1",
