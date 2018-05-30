@@ -50,16 +50,16 @@ export class HistoryComponent implements OnInit {
       // Get Unique Months from Payments for selected year
       this.getUniqueMonths();
       // Parse payments to make historyDisplay Array
-      let u = 0;
+      let n = 0;
       this.historyDisplay = [];
       for (const key of this.uniqueMonths) {
         this.historyDisplay.push({ month: key, payments: []});
         for (const i of this.paymentsByYear) {
           if ( key === i.month) {
-            this.historyDisplay[u].payments.push({utilityName: i.utilityName, amountPayment: i.amountPayment});
+            this.historyDisplay[n].payments.push({utilityName: i.utilityName, amountPayment: i.amountPayment});
           }
         }
-        u += 1;
+         n += 1;
       }
       // Find total of every month for selected year
       this.totalOfEachMonth();
@@ -67,12 +67,10 @@ export class HistoryComponent implements OnInit {
   }
 
   // Get Unique years from payments
-  getUniqueYears(): void {
+  // TODO
+  getUniqueYears() {
     this.paymentService.getPayments().subscribe(data => {this.payments = data;
       for (const i of this.payments) {
-        if (!this.uniqueYears.length) {
-          this.uniqueYears.push(i.year);
-        }
         if (this.uniqueYears.indexOf(i.year) === -1) {
           this.uniqueYears.push(i.year);
         }
@@ -87,9 +85,6 @@ export class HistoryComponent implements OnInit {
   getUniqueMonths() {
     this.uniqueMonths = [];
     for (const key of this.paymentsByYear) {
-      if (!this.uniqueMonths.length) {
-        this.uniqueMonths.push(key.month);
-      }
       if (this.uniqueMonths.indexOf(key.month) === -1) {
         this.uniqueMonths.push(key.month);
       }

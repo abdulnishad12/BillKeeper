@@ -16,13 +16,13 @@
 
 				      	<h5>Direct Payment</h5>
 
-				        <input #amountOfPaymentVariable
-				        (keyup) = "formValidationVariablePayment(amountOfPaymentVariable.value,utility.utilityName);"
-				        placeholder="Enter Payment Amount"
-				        [value]="totalCalculation!=0 && selectedUtility===utility.utilityName ? totalCalculation : ''"
-				        class="form-control"
-				        [ngClass]="{'invalid': validatorVariablePaymentAmount && selectedUtility===utility.utilityName }"
-				        type="number" >
+                <input #amountOfPaymentVariable
+                (keyup) = "formValidationVariablePayment(amountOfPaymentVariable.value,utility.utilityName);"
+                placeholder="Enter Payment Amount"
+                [value]="totalCalculation!=0 && selectedUtility===utility.utilityName ? totalCalculation : ''"
+                class="form-control"
+                [ngClass]="{'invalid': validatorVariablePaymentAmount && selectedUtility===utility.utilityName }"
+                type="number" >
 
 				        <div class="error"
                      [ngClass]="{ 'show': validatorVariablePaymentAmount && selectedUtility===utility.utilityName,

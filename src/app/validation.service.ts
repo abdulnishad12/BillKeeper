@@ -6,7 +6,7 @@ import { Utility } from './utility';
   providedIn: 'root'
 })
 
-// Validation methods: complete validation - false, not complete - true
+// Validation methods: success validation - false, failed - true
 
 export class ValidationService {
   maxLengthOfInput = 5;
