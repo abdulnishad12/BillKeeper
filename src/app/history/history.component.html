@@ -2,16 +2,16 @@
 	<div class="container">
 		<div class="row">
 			<div class="history-page-side-nav col-12">
-				<select class="form-control form-control-md" [(ngModel)]="selectedYear" (change)='getPaymentByYear();'>
-					<option *ngFor="let key of years">{{key}}</option>
+				<select class="form-control form-control-md" [(ngModel)]="selectedYear" (change)='getPaymentsInformation();'>
+					<option *ngFor="let key of uniqueYears">{{key}}</option>
 				</select>
 			</div>
 		</div>
 		<div class="history-page-holder__content">
 			<div class="row">
-			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5 animated zoomIn" *ngFor="let key of historyDisplay">
+			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5 animated zoomIn mx-auto" *ngFor="let key of historyDisplay">
 					<div class="utility-holder">
-						<div class="row"> 
+						<div class="row">
 							<h3 class="card-title col-12">{{ key.month | month }}</h3>
 							<div class="utility-holder__left-side col-6">
 								<h5>Utilities</h5>
@@ -20,7 +20,7 @@
 										<li *ngFor = "let i of key.payments">{{i.utilityName}}</li>
 										<li><strong>All</strong></li>
 									</div>
-								</ul>	
+								</ul>
 							</div>
 							<div class="utility-holder__right-side col-6">
 								<h5>Total</h5>
@@ -29,9 +29,9 @@
 										<li *ngFor = "let i of key.payments">{{i.amountPayment}}</li>
 										<div class="if-holder" *ngFor="let u of totalByMonth">
 											<li *ngIf="key.month===u.month"><strong>{{u.totalOfMonth}}</strong></li>
-										</div>		
+										</div>
 									</div>
-								</ul>	
+								</ul>
 							</div>
 						</div>
 					</div>

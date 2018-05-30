@@ -1,67 +1,52 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs'
-import { Tariff } from './payment';
-import { HttpClient,HttpHeaders } from '@angular/common/http'
+import { Utility } from './utility';
 
 
-
-const httpOptions = {
-	headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
-
-@Injectable({
+@Injectable( {
   providedIn: 'root'
 })
 
-
+// Validation methods: complete validation - false, not complete - true
 
 export class ValidationService {
+  maxLengthOfInput = 5;
 
-	public tariffs: Tariff[];
-	maxLengthOfInput = 5;
+  constructor() {}
+  // Validation: length less than maxLengthOfInput and only positive number
+  formValidationLengthAndPositive(validateInput: string, ) {
+    return validateInput.length > this.maxLengthOfInput || +validateInput < 0;
+  }
+  // Validation: unique utility value and only chars
+  formValidationUniqueAndOnlyChars(validateInput: string, utilitiesArray: Utility[]) {
+    if (!/^[a-zA-Z]+$/.test(validateInput)) {
+      return true;
+    }
+    for (const key of utilitiesArray) {
+      if (key.utilityName.toLowerCase() === validateInput.toLowerCase()) {
+        return true;
+      }
+    }
+    return false;
+  }
+  /* Validation: length less than maxLengthOfInput and only positive number
+  * Current counter value larger that previous counter value
+   */
+  formValidationPreviousCounterLargerThanCurrent(validateInput: string, compareUtilityName: string, utilitiesArray: Utility[]) {
+    if (validateInput.length > this.maxLengthOfInput || +validateInput < 0) {
+      return true;
+    }
+    for (const key of utilitiesArray) {
+      if (compareUtilityName === key.utilityName) {
+        if (+validateInput !== key.previousCounter && +validateInput > key.previousCounter) {
+          if ( key.tariff !== 0 ) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
+  }
 
-	private tariffUrl = 'api/tariffs';
-
-	constructor(private http: HttpClient) { 
-		this.getTariffs();
-	}
-
-	formValidationLengthAndPositive(validateInput: string, ){
-		return validateInput.length > this.maxLengthOfInput || +validateInput < 0 );
-	}
-
-	formValidationUniqueAndOnlyChars(validateInput:string, tariffsArray:any){
-		if (!/^[a-zA-Z]+$/.test(validateInput)) {
-			return true;
-		}
-		for (const key of tariffsArray) {
-			if (key.utilityName.toLowerCase() === validateInput.toLowerCase()) {
-				return true;
-			}
-		} 
-		return false;
-	}
-
-	formValidationPreviousCounterLargerThanCurrent(validateInput:string,compareUtilityName: string){
-		if (validateInput.length > this.maxLengthOfInput || +validateInput < 0){
-			return true;
-		} 
-		for (const key of this.tariffs) {
-			if (compareUtilityName === key.utilityName) {
-				if (+validateInput !== key.counterForPreviousMonth && +validateInput > key.counterForPreviousMonth) {
-					if(key.tariff != 0){
-						return false;
-					}
-				}
-			}
-		}
-		return true
-	}
-
-	getTariffs(){
-		this.http.get<Tariff[]>(this.tariffUrl).subscribe(data => {this.tariffs = data;
-    });
-	}
 
 
 

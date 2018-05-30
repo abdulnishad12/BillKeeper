@@ -2,10 +2,10 @@
 	margin-top: 70px
 	position: relative
 	.pay-page-holder__content
-		display: inline-block	
+		display: inline-block
 		.utility-holder
-			min-width: 542px
 			min-height: 300px
+      width: 100%
 			text-align: center
 			background-color: #fff
 			padding: 20px 30px
@@ -18,7 +18,7 @@
 				background-color: lighten(#719DCA,15%)
 				.utility-holder__header
 					h3
-						color: #fff !important	
+						color: #fff !important
 				h3,p,h5
 					transition: all 0.4s ease
 					color: #fff !important
@@ -86,12 +86,12 @@
 				border-right: 1px solid #719DCA
 
 		.utility-holder--fixed
-			.utility-holder-content__left-side		
+			.utility-holder-content__left-side
 				text-align: center
 				border-right: none
 				input
 					margin: 15px auto 0 auto
-					width: 50% 
+					width: 50%
 
 
 .modal-body,.modal-footer
@@ -120,3 +120,19 @@
 
 .calculation-helper
 	padding: 15px 5px
+
+@media only screen and (max-width : 572px)
+  .utility-holder
+    .total-holder
+      padding: 0 40% !important
+    .utility-holder-content
+      input
+        width: 300px !important
+        margin: 0 auto
+
+@media only screen and (max-width : 400px)
+  .utility-holder
+    .utility-holder-content
+      input
+        width: 200px !important
+        margin: 0 auto

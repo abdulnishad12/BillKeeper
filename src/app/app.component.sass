@@ -1,7 +1,7 @@
 .navbar
 	padding: 5px
 	background-color: #719DCA
- 
+
 	a
 		color: #fff
 	.navbar-brand
@@ -24,3 +24,13 @@
 .active-link
 	color: darken(#FEB941,5%) !important
 	transition: color 0.3s ease
+
+@media only screen and (max-width : 992px)
+  .navbar
+    text-align: right
+    .navbar-nav
+      .nav-item
+        border-right: none
+        margin-bottom: 10px
+        &:nth-child(1)
+          margin-top: 10px

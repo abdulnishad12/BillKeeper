@@ -1,10 +1,10 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 
 import { PaymentService } from '../payment.service';
-import { TariffsService } from '../tariffs.service';
+import { UtilityService } from '../utility.service';
 import { ValidationService } from '../validation.service';
 
-import { Tariff } from '../payment';
+import { Utility } from '../utility';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -17,11 +17,11 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 })
 export class SettingsComponent implements OnInit {
 
-  tariffs: Tariff[] = [];
-  selectedUtility: string;
-
   modalRef: BsModalRef;
-  newFixedPrice = false;
+
+  utilities: Utility[] = [];
+  selectedUtility: string;
+  newUtilityFixedPriceCheckbox = false;
 
   // Validation variable
   validatorVariableCounter = false;
@@ -32,46 +32,61 @@ export class SettingsComponent implements OnInit {
 
 
 
-  constructor(private paymentService: PaymentService, private tariffsService: TariffsService, private modalService: BsModalService, private validationService: ValidationService) { }
+  constructor(private paymentService: PaymentService,
+              private utilityService: UtilityService,
+              private modalService: BsModalService,
+              private validationService: ValidationService) { }
 
+  // For open modal from component by id in template
   @ViewChild('addNewUtilityModal') addNewUtilityModal: any;
 
   ngOnInit() {
-    this.getTariffs();
-    this.newUserModalHelperMethod();
+    this.getUtilities();
+    this.newUserModalHelper();
   }
 
-  // Open Help Window if utility array clear
-
-  newUserModalHelperMethod(){
-    this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
-      if (this.tariffs.length === 0) {
-        this.openModal(this.addNewUtilityModal)
+  // Open Help Window if there is no utilities in DB
+  newUserModalHelper() {
+    this.utilityService.getUtilities().subscribe(data => {this.utilities = data;
+      if (this.utilities.length === 0) {
+        this.openModal(this.addNewUtilityModal);
       }
     });
   }
 
 
   // Add new utility
-
-  onSubmitnewUtility(newUtilityName: string, fixedOrVariableCheakbox: boolean) {
-      if (this.tariffs.length != 0){
-        this.tariffsService.addTariff({ id: this.tariffs.slice(-1)[0].id + 1, utilityName: newUtilityName, tariff: 0, counterForPreviousMonth: 0, fixedPayment: fixedOrVariableCheakbox } as Tariff)
-        .subscribe(data => this.tariffs.push(data));
-      }else{
-        this.tariffsService.addTariff({ id: 1, utilityName: newUtilityName, tariff: 0, counterForPreviousMonth: 0, fixedPayment: fixedOrVariableCheakbox } as Tariff)
-        .subscribe(data => this.tariffs.push(data));
-      }    
+  onSubmitNewUtility(newUtilityName: string, fixedOrVariableCheckbox: boolean) {
+      if (this.utilities.length !== 0) {
+        this.utilityService.addUtility(
+          { id: this.utilities.slice(-1)[0].id + 1,
+            utilityName: newUtilityName,
+            tariff: 0,
+            previousCounter: 0,
+            fixedPaymentIndicator: fixedOrVariableCheckbox } as Utility)
+        .subscribe(data => this.utilities.push(data));
+      } else {
+        this.utilityService.addUtility(
+          { id: 1, utilityName:
+            newUtilityName, tariff: 0,
+            previousCounter: 0,
+            fixedPaymentIndicator: fixedOrVariableCheckbox } as Utility)
+        .subscribe(data => this.utilities.push(data));
+      }
     this.modalRef.hide();
   }
 
   // Add new tariff
-
-  onSubmitNewTariff(utilityName: string, fixedPayment: boolean, counterAnount: number, tariffAmount: number) {
-    for (const key of this.tariffs) {
+  onSubmitNewTariff(utilityName: string, fixedPayment: boolean, counterAmount: number, tariffAmount: number) {
+    for (const key of this.utilities) {
       if (key.utilityName === utilityName) {
-        this.tariffsService.updateTariff({id: key.id, utilityName: key.utilityName, tariff: tariffAmount, counterForPreviousMonth: counterAnount, fixedPayment: key.fixedPayment}).subscribe();
-        key.counterForPreviousMonth = counterAnount;
+        this.utilityService.updateTariff(
+          {id: key.id,
+          utilityName: key.utilityName,
+          tariff: tariffAmount,
+          previousCounter: counterAmount,
+          fixedPaymentIndicator: key.fixedPaymentIndicator}).subscribe();
+        key.previousCounter = counterAmount;
         key.tariff = tariffAmount;
       }
      }
@@ -79,14 +94,14 @@ export class SettingsComponent implements OnInit {
 
   // Http methods
 
-  getTariffs(): void {
-    this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
+  getUtilities(): void {
+    this.utilityService.getUtilities().subscribe(data => {this.utilities = data;
     });
   }
 
-  deleteTariff(utilityId: number){
-    this.tariffsService.deleteTariff(utilityId).subscribe();
-    this.getTariffs();
+  deleteUtility(utilityId: number) {
+    this.utilityService.deleteUtility(utilityId).subscribe();
+    this.getUtilities();
   }
 
   // Show and hide Alert window
@@ -106,9 +121,9 @@ export class SettingsComponent implements OnInit {
 
   // Form Validation Functions
 
-  formValidationVariableCounter(utilityName: string, counterAnount: string) {
+  formValidationVariableCounter(utilityName: string, counterAmount: string) {
     this.selectedUtility = utilityName;
-    this.validatorVariableCounter = this.validationService.formValidationLengthAndPositive(counterAnount);
+    this.validatorVariableCounter = this.validationService.formValidationLengthAndPositive(counterAmount);
   }
 
   formValidationVariableTariff(utilityName: string, tariffAmount: string) {
@@ -122,7 +137,7 @@ export class SettingsComponent implements OnInit {
   }
 
   formValidationNewUtility(newUtilityName: string) {
-   this.validatorNewUtility = this.validationService.formValidationUniqueAndOnlyChars(newUtilityName,this.tariffs);
+   this.validatorNewUtility = this.validationService.formValidationUniqueAndOnlyChars(newUtilityName, this.utilities);
   }
 
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, TemplateRef} from '@angular/core';
 
 import {PaymentService} from '../payment.service';
-import { Payment, PaymentByMonth } from '../payment';
+import { Payment, PaymentsByMonths } from '../payment';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -13,13 +13,16 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 })
 export class HistoryComponent implements OnInit {
 
-  paymentByYear: Payment[];
+  paymentsByYear: Payment[]; // Payments for selected year
   payments: Payment[];
+  historyDisplay: PaymentsByMonths[]; // Array for display all payment on history page
+
   selectedYear = new Date().getFullYear();
-  years = [];
-  months = [];
-  historyDisplay: PaymentByMonth[] = [];
-  totalByMonth = [];
+
+  uniqueYears = [];
+  uniqueMonths = [];
+  totalByMonth = []; // total for each month
+
   modalRef: BsModalRef;
 
   @ViewChild('newUserModalHelper') newUserModalHelper: any;
@@ -28,96 +31,106 @@ export class HistoryComponent implements OnInit {
   constructor(private paymentService: PaymentService, private modalService: BsModalService) { }
 
   ngOnInit() {
-    this.getPaymentByYear();
-    this.getPayment();
+    this.getPayments();
     this.newUserModalHelperMethod();
+    this.getUniqueYears();
+    this.getPaymentsInformation();
   }
-
-  newUserModalHelperMethod(){
+  // Show modal window if there is no payments in DB
+  newUserModalHelperMethod() {
     this.paymentService.getPayments().subscribe(data => {this.payments = data;
       if (this.payments.length === 0) {
-        this.openModal(this.newUserModalHelper)
+        this.openModal(this.newUserModalHelper);
       }
     });
   }
-
-  yearsOrder(a, b) {
-    if (a > b) { return -1; }
-    if (a < b) { return 1; }
-  }
-
-  monthsOrder(a, b) {
-    if (a > b) { return 1; }
-    if (a < b) { return -1; }
-  }
-
-  getPaymentByYear(): void {
-    this.paymentService.getPaymentsByYear(this.selectedYear).subscribe(data => {this.paymentByYear = data;
-      // Find unique Months in DB for selected year
-      this.months = [];
-      for (const key of this.paymentByYear) {
-        if (!this.months.length) {
-          this.months.push(key.month);
-        } else {
-          if (this.months.indexOf(key.month) === -1) {
-            this.months.push(key.month);
-          }
-        }
-      }
-      this.months.sort(this.monthsOrder);
-
-      // Making parse DB to display on history page
+  // Get payment information for correct display on history page
+  getPaymentsInformation(): void {
+    this.paymentService.getPaymentsByYear(this.selectedYear).subscribe(data => {this.paymentsByYear = data;
+      // Get Unique Months from Payments for selected year
+      this.getUniqueMonths();
+      // Parse payments to make historyDisplay Array
       let u = 0;
       this.historyDisplay = [];
-      for (const key of this.months) {
-        this.historyDisplay.push({month: key, payments: []});
-        for (const i of this.paymentByYear) {
+      for (const key of this.uniqueMonths) {
+        this.historyDisplay.push({ month: key, payments: []});
+        for (const i of this.paymentsByYear) {
           if ( key === i.month) {
             this.historyDisplay[u].payments.push({utilityName: i.utilityName, amountPayment: i.amountPayment});
           }
         }
         u += 1;
       }
-
-      // Find total of every month
-      this.totalByMonth = [];
-      let totalMonth = 0;
-      for (const key of this.months) {
-        for (const i of this.paymentByYear) {
-          if (key === i.month) {
-            totalMonth += i.amountPayment;
-          }
-        }
-        this.totalByMonth.push({month: key, totalOfMonth: totalMonth});
-        totalMonth = 0;
-      }
+      // Find total of every month for selected year
+      this.totalOfEachMonth();
     });
   }
 
-  getPayment(): void {
-    // Find unique Years in DB
+  // Get Unique years from payments
+  getUniqueYears(): void {
     this.paymentService.getPayments().subscribe(data => {this.payments = data;
       for (const i of this.payments) {
-        if (!this.years.length) {
-          this.years.push(i.year);
-        } else {
-          if (this.years.indexOf(i.year) === -1) {
-            this.years.push(i.year);
-          }
+        if (!this.uniqueYears.length) {
+          this.uniqueYears.push(i.year);
+        }
+        if (this.uniqueYears.indexOf(i.year) === -1) {
+          this.uniqueYears.push(i.year);
         }
       }
-      this.years.sort(this.yearsOrder);
+      this.uniqueYears.sort(this.yearsOrder);
     });
-    if (this.years.length === 0 ){
-      this.years.push(this.selectedYear);
+    if (this.uniqueYears.length === 0 ) {
+      this.uniqueYears.push(this.selectedYear);
+    }
+  }
+  // Find unique Months from Payments for selected year
+  getUniqueMonths() {
+    this.uniqueMonths = [];
+    for (const key of this.paymentsByYear) {
+      if (!this.uniqueMonths.length) {
+        this.uniqueMonths.push(key.month);
+      }
+      if (this.uniqueMonths.indexOf(key.month) === -1) {
+        this.uniqueMonths.push(key.month);
+      }
+    }
+    this.uniqueMonths.sort(this.monthsOrder);
+  }
+  // Total for each month for selected Year
+  totalOfEachMonth() {
+    this.totalByMonth = [];
+    let totalMonth = 0;
+    for (const key of this.uniqueMonths) {
+      for (const i of this.paymentsByYear) {
+        if (key === i.month) {
+          totalMonth += i.amountPayment;
+        }
+      }
+      this.totalByMonth.push({month: key, totalOfMonth: totalMonth});
+      totalMonth = 0;
     }
   }
 
+  // get all Payments
+  getPayments() {
+    this.paymentService.getPayments().subscribe(data => this.payments = data);
+  }
+
+  // Open modal window
   openModal(template: TemplateRef <any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-md'});
   }
 
-
+  // Sort years from biggest to littlest
+  yearsOrder(a, b) {
+    if (a > b) { return -1; }
+    if (a < b) { return 1; }
+  }
+  // Sort months from 0 to 11
+  monthsOrder(a, b) {
+    if (a > b) { return 1; }
+    if (a < b) { return -1; }
+  }
 
 
 }

@@ -5,9 +5,9 @@ import { MonthPipe } from 'src/pipis/month';
 
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from './mock-db';
+import { InMemoryDataService } from './mock-db';
 
-import { ModalModule,PopoverModule,AlertModule,BsDatepickerModule } from 'ngx-bootstrap';
+import { ModalModule, PopoverModule, AlertModule, BsDatepickerModule } from 'ngx-bootstrap';
 
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -27,8 +27,6 @@ import { PaymentService } from './payment.service';
     PayComponent,
     SettingsComponent,
     MonthPipe,
-    
-
   ],
   imports: [
     BrowserModule,
@@ -43,7 +41,6 @@ import { PaymentService } from './payment.service';
     ModalModule.forRoot(),
     ReactiveFormsModule,
     PopoverModule.forRoot(),
-    
   ],
   providers: [PaymentService],
   bootstrap: [AppComponent]

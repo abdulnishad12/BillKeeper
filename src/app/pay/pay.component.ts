@@ -1,9 +1,10 @@
 import { Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 
-import { Payment, Tariff } from '../payment';
+import { Payment } from '../payment';
+import { Utility } from '../utility';
 
 import { PaymentService } from '../payment.service';
-import { TariffsService } from '../tariffs.service';
+import { UtilityService } from '../utility.service';
 import { ValidationService } from '../validation.service';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -18,14 +19,16 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 })
 export class PayComponent implements OnInit {
 
+  // To have access to newUser Model from component
   @ViewChild('newUserModalHelper') newUserModalHelper: any;
 
   modalRef: BsModalRef;
 
   payments: Payment[];
-  selectedUtility: string;
+  utilities: Utility[];
+
+  selectedUtility: string; // to use validation or calculation only to chose utility from ngFor
   paymentAmount: number;
-  tariffs: Tariff[];
   totalCalculation = 0;
 
   // Validation variable
@@ -33,98 +36,74 @@ export class PayComponent implements OnInit {
   validatorVariableCalculation = false;
   validatorFixedPaymentAmount = false;
 
-
-
   currentYear = new Date().getFullYear();
   currentMonth = new Date().getMonth();
 
-
-
-  constructor(private paymentService: PaymentService, private tariffsService: TariffsService, private modalService: BsModalService, private validationService: ValidationService) { }
+  constructor(private paymentService: PaymentService,
+              private utilityService: UtilityService,
+              private modalService: BsModalService,
+              private validationService: ValidationService) { }
 
   ngOnInit() {
-    this.getTariffs();
+    this.getUtilities();
     this.getPayments();
     this.newUserModalHelperMethod();
   }
 
-
-  newUserModalHelperMethod(){
-    this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
-      if (this.tariffs.length === 0) {
-        this.openModal(this.newUserModalHelper)
+  // Show modal window helper for hew user, if db of utilities empty
+  newUserModalHelperMethod() {
+    this.utilityService.getUtilities().subscribe(data => {this.utilities = data;
+      if (this.utilities.length === 0) {
+        this.openModal(this.newUserModalHelper);
       }
     });
   }
-
+  // Update payment amount of chose date and utility
   updatePayment(amountOfPayment: number, utility: string, selectedMonth: any) {
-    selectedMonth = this.getMonthNumber(selectedMonth);
-    let addPaymentAmounts = 0;
-    this.paymentService.getPayments().subscribe(data => {this.payments = data;
-      for ( const key of this.payments) {
-        if (key.utilityName === utility && key.year === this.currentYear && key.month === selectedMonth) {
-          addPaymentAmounts = key.amountPayment + amountOfPayment;
-          this.paymentService.updatePayment({id: key.id, utilityName: utility, year: this.currentYear, month: selectedMonth, amountPayment: addPaymentAmounts}).subscribe();
-        }
-      }
-    });
+    this.paymentService.updatePaymentInService(amountOfPayment, utility, selectedMonth);
   }
 
-  addPayment(amountOfPayment: number, utility: string, selectedMonth: any){
-    selectedMonth = this.getMonthNumber(selectedMonth);
-    this.paymentService.getPayments().subscribe(data => {this.payments = data;
-      this.paymentService.addPayment({ id: this.payments.length + 1, utilityName: utility, year: this.currentYear, month: selectedMonth, amountPayment: amountOfPayment } as Payment)
-      .subscribe(data =>
-        this.payments.push(data));
-    });
+  addPayment(amountOfPayment: number, utility: string, selectedMonth: any) {
+    this.paymentService.addPaymentInService(amountOfPayment, utility, selectedMonth);
   }
 
-  getMonthNumber(selectedMonth: any) {
-    let monthNumber = 0
-    const months = [ ' ', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ];
-    for (const m of months) {
-      if (m === selectedMonth) {
-        selectedMonth = monthNumber;
-      }
-      monthNumber += 1;
-    }
-    return selectedMonth;
-  }
-
-
-   getPaymentInformation(amountOfPayment: number, utility: string, selectedMonth: any, confirmPayment: TemplateRef <any>, confirmUpdate: TemplateRef <any>) {
-    this.paymentAmount = 0;
-    selectedMonth = this.getMonthNumber(selectedMonth);
+  // Decide which model should open, for update or add payment
+   getPaymentInformation(amountOfPayment: number,
+                         utility: string,
+                         selectedMonth: any,
+                         confirmPayment: TemplateRef <any>,
+                         confirmUpdate: TemplateRef <any>) {
+    this.paymentAmount = 0; // for display payment amount if it update modal
+    selectedMonth = this.paymentService.getMonthNumber(selectedMonth);
     this.paymentService.getPayments().subscribe(data => {this.payments = data;
-      let n = 0;
       for ( const key of this.payments) {
         if (key.utilityName === utility && key.year === this.currentYear && key.month === selectedMonth) {
           this.openModal(confirmUpdate);
-          this.paymentAmount = key.amountPayment;
-        } else {
-          n += 1;
-          if (n === this.payments.length) {
-            this.openModal(confirmPayment);
-          }
+          return this.paymentAmount = key.amountPayment;
         }
       }
+      this.openModal(confirmPayment);
     });
   }
 
 
-
-  getCalculateInformation(counterForThisMonth: any , utility: string) {
+  // Calculate payment amount
+  getCalculateInformation(currentCounter: any , utility: string) {
     this.totalCalculation = 0;
     this.selectedUtility = utility;
-    for (const key of this.tariffs) {
+    for (const key of this.utilities) {
       if (utility === key.utilityName) {
-        this.totalCalculation = (counterForThisMonth - key.counterForPreviousMonth) * key.tariff;
-        this.tariffsService.updateTariff({id: key.id, utilityName: key.utilityName, tariff: key.tariff, counterForPreviousMonth: counterForThisMonth, fixedPayment: key.fixedPayment}).subscribe();
-        key.counterForPreviousMonth = counterForThisMonth;
+        this.totalCalculation = (currentCounter - key.previousCounter) * key.tariff;
+        // Update Previous Counter Amount = Current Counter Amount
+        this.utilityService.updateTariff(
+          {id: key.id,
+            utilityName: key.utilityName,
+            tariff: key.tariff,
+            previousCounter: currentCounter,
+            fixedPaymentIndicator: key.fixedPaymentIndicator}).subscribe();
+        key.previousCounter = currentCounter;
       }
     }
-    this.formValidationVariablePayment(counterForThisMonth, utility);
-    document.getElementById('VariblePriceButton').classList.remove('cursor-off');
   }
 
 
@@ -135,8 +114,8 @@ export class PayComponent implements OnInit {
     });
   }
 
-  getTariffs(): void {
-    this.tariffsService.getTariffs().subscribe(data => {this.tariffs = data;
+  getUtilities(): void {
+    this.utilityService.getUtilities().subscribe(data => {this.utilities = data;
     });
   }
 
@@ -155,7 +134,7 @@ export class PayComponent implements OnInit {
     }, 3000);
   }
 
-  // Form Validation Functions
+  // Form Validation Methods
 
   formValidationVariablePayment(amountOfPayment: any, utility: string) {
     this.selectedUtility = utility;
@@ -169,7 +148,11 @@ export class PayComponent implements OnInit {
 
   formValidationVariableCalculation(counterForThisMonth: string, utility: string) {
     this.selectedUtility = utility;
-    this.validatorVariableCalculation = this.validationService.formValidationPreviousCounterLargerThanCurrent(counterForThisMonth,utility)
+    this.validatorVariableCalculation =
+      this.validationService.formValidationPreviousCounterLargerThanCurrent(
+        counterForThisMonth,
+        utility,
+        this.utilities);
   }
 
 
