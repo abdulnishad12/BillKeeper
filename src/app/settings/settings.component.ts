@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit {
   validatorVariableCounter = false;
   validatorVariableTariff = false;
   validatorFixedTariff = false;
-  validatorNewUtility = [false, ''];
+  validatorNewUtility = [false, '']; // first variable validation indicator, second is a message of witch validation have not complete
 
 
 

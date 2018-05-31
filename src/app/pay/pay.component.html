@@ -149,9 +149,10 @@
 			    			<h5>Direct Payment</h5>
 
 			    			<input type="number" class="form-control"
+                (focus)="amountOfPaymentFixed.value = utility.tariff.toString()"
 			    			(keyup) = "formValidationFixedPayment(amountOfPaymentFixed.value,utility.utilityName);"
 			    			[ngClass]="{'invalid': validatorFixedPaymentAmount && selectedUtility===utility.utilityName }"
-			    			placeholder="Enter payment amount" #amountOfPaymentFixed>
+			    			placeholder="Enter payment amount" #amountOfPaymentFixed >
 
 			    			<div class="error"
                      [ngClass]="{ 'show': validatorFixedPaymentAmount && selectedUtility===utility.utilityName,

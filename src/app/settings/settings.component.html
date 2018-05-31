@@ -24,7 +24,8 @@
 							[ngClass]="{'invalid': validatorVariableCounter && selectedUtility===utility.utilityName }"
 							placeholder="Previous Counter" #counterAmount>
 
-							<div class="error"  [ngClass]="{ 'show': validatorVariableCounter && selectedUtility===utility.utilityName,'hide': !(validatorVariableCounter && selectedUtility===utility.utilityName) }">
+							<div class="error"  [ngClass]="{ 'show': validatorVariableCounter && selectedUtility===utility.utilityName,
+							'hide': !(validatorVariableCounter && selectedUtility===utility.utilityName) }">
 								Only five-digit positive number allowed
 							</div>
 
@@ -33,7 +34,8 @@
 							[ngClass]="{'invalid': validatorVariableTariff && selectedUtility===utility.utilityName }"
 							placeholder="Utility tariff" #tariffAmount>
 
-							<div class="error" [ngClass]="{ 'show': validatorVariableTariff && selectedUtility===utility.utilityName,'hide': !(validatorVariableTariff && selectedUtility===utility.utilityName) }">
+							<div class="error" [ngClass]="{ 'show': validatorVariableTariff && selectedUtility===utility.utilityName,
+							'hide': !(validatorVariableTariff && selectedUtility===utility.utilityName) }">
 								Only five-digit positive number allowed
 							</div>
 						</div>
@@ -46,10 +48,16 @@
 							</div>
 						</div>
 					</div>
+
 					<button type ="submit" class="button"
-					[ngClass]="{'cursor-off': validatorVariableTariff || validatorVariableCounter || counterAmount.value =='' || tariffAmount.value==''||  tariffAmount.value==0 }"
-					(click) = "onSubmitNewTariff(utility.utilityName,utility.fixedPaymentIndicator,+counterAmount.value,+tariffAmount.value);tariffAmount.value='';counterAmount.value ='';">Submit</button>
-				</div>
+					[ngClass]="{'cursor-off': validatorVariableTariff || validatorVariableCounter
+					|| counterAmount.value =='' || tariffAmount.value==''||  tariffAmount.value==0 }"
+					(click) = "onSubmitNewTariff(utility.utilityName,
+					utility.fixedPaymentIndicator,
+					+counterAmount.value,
+					+tariffAmount.value);tariffAmount.value='';counterAmount.value ='';">Submit</button>
+
+        </div>
 
 				<!-- Fixed Price Utility -->
 				<div class="utility-holder__item" *ngIf = "utility.fixedPaymentIndicator===true">
@@ -61,8 +69,14 @@
 					</div>
 					<div class="row utility-holder-content ">
 						<div class="utility-holder__inputs col-12 col-sm-6 mb-2 mb-sm-0">
-							<input type="number" class="form-control" (keyup) = "formValidationFixed(utility.utilityName,tariffAmountFixed.value);" [ngClass]="{'invalid': validatorFixedTariff && selectedUtility === utility.utilityName }" placeholder="Fixed price" #tariffAmountFixed>
-							<div class="error" [ngClass]="{ 'show': validatorFixedTariff && selectedUtility===utility.utilityName,'hide': !(validatorFixedTariff && selectedUtility===utility.utilityName) }">
+
+							<input type="number" class="form-control"
+                     (keyup) = "formValidationFixed(utility.utilityName,tariffAmountFixed.value);"
+                     [ngClass]="{'invalid': validatorFixedTariff && selectedUtility === utility.utilityName }"
+                     placeholder="Fixed price" #tariffAmountFixed>
+
+							<div class="error" [ngClass]="{ 'show': validatorFixedTariff && selectedUtility===utility.utilityName,
+							'hide': !(validatorFixedTariff && selectedUtility===utility.utilityName) }">
 								Only five-digit positive number allowed
 							</div>
 						</div>
@@ -72,7 +86,13 @@
 							</div>
 						</div>
 					</div>
-					<button class="button" [ngClass]="{'cursor-off': validatorFixedTariff || tariffAmountFixed.value =='' ||  tariffAmountFixed.value==0 }"  (click) = "onSubmitNewTariff(utility.utilityName,utility.fixedPaymentIndicator,previousCounter?.value,tariffAmountFixed.value);tariffAmountFixed.value = '';">Submit</button>
+
+					<button class="button" [ngClass]="{'cursor-off': validatorFixedTariff ||
+					tariffAmountFixed.value =='' ||  tariffAmountFixed.value==0 }"
+                  (click) = "onSubmitNewTariff(utility.utilityName,
+                  utility.fixedPaymentIndicator,
+                  previousCounter?.value,
+                  tariffAmountFixed.value);tariffAmountFixed.value = '';">Submit</button>
 				</div>
 
 				<ng-template #confirmDeleteUtility>
@@ -118,7 +138,12 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button class="button" [ngClass]="{'cursor-off': validatorNewUtility[0] || newUtilityName =='' ||  newUtilityName==0 ||  newUtilityName==undefined }" (click) = "onSubmitNewUtility(newUtilityName,newUtilityFixedPriceCheckbox);newUtilityName = undefined;newFixedPrice = false;">Add</button>
+			<button class="button"
+              [ngClass]="{'cursor-off': validatorNewUtility[0] ||
+              newUtilityName =='' ||  newUtilityName==0 ||
+              newUtilityName==undefined }"
+              (click) = "onSubmitNewUtility(newUtilityName,newUtilityFixedPriceCheckbox);
+              newUtilityName = undefined;newFixedPrice = false;">Add</button>
 		</div>
 	</ng-template>
 

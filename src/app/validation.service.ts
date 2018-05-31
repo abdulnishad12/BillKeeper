@@ -14,11 +14,11 @@ export class ValidationService {
   constructor() {}
 
   // Validation: length less than maxLengthOfInput and only positive number
-  formValidationLengthAndPositive(validateInput: string): boolean {
+  formValidationLengthAndPositive(validateInput: string) {
     return validateInput.length > this.maxLengthOfInput || +validateInput < 0;
   }
   // Validation: unique utility value and only chars
-  formValidationUniqueAndOnlyChars(validateInput: string, utilitiesArray: Utility[]): [boolean, string] {
+  formValidationUniqueAndOnlyChars(validateInput: string, utilitiesArray: Utility[]) {
     if (!/^[a-zA-Z]+$/.test(validateInput)) {
       const message1 = 'Only letters allow';
       return [true, message1];
