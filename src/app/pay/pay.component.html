@@ -3,7 +3,7 @@
 		<div class="pay-section-holder">
 			<div class="row" >
 
-			  <div class="col-12 mb-5 animated zoomIn mx-auto" *ngFor="let utility of utilities"
+			  <div class="col-12 mb-5 animated fadeIn mx-auto" *ngFor="let utility of utilities"
              [ngClass]="{ 'col-lg-6': utilities.length > 1,
                      'col-lg-12': utilities.length === 1 }">
 			    <div class="utility-holder utility-holder--variable" *ngIf = "utility.fixedPaymentIndicator===false">

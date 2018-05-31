@@ -19,7 +19,7 @@ export class ValidationService {
   }
   // Validation: unique utility value and only chars
   formValidationUniqueAndOnlyChars(validateInput: string, utilitiesArray: Utility[]) {
-    if (!/^[a-zA-Z]+$/.test(validateInput)) {
+    if (!/^[A-Za-z].*$/.test(validateInput)) {
       const message1 = 'Only letters allow';
       return [true, message1];
     }
