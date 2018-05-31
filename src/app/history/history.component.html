@@ -1,55 +1,62 @@
-<section class="history-page-holder">
-	<div class="container">
-		<div class="row">
-			<div class="history-page-side-nav col-12">
-				<select class="form-control form-control-md" [(ngModel)]="selectedYear" (change)='getPaymentsInformation();'>
-					<option *ngFor="let key of uniqueYears">{{key}}</option>
-				</select>
-			</div>
-		</div>
-		<div class="history-page-holder__content">
-			<div class="row">
-			  <div class="col-lg-6 col-md-10 col-sm-12 mb-5 animated zoomIn mx-auto" *ngFor="let key of historyDisplay">
-					<div class="utility-holder">
-						<div class="row">
-							<h3 class="card-title col-12">{{ key.month | month }}</h3>
-							<div class="utility-holder__left-side col-6">
-								<h5>Utilities</h5>
-								<ul>
-									<div class="if-holder" >
-										<li *ngFor = "let i of key.payments">{{i.utilityName}}</li>
-										<li><strong>All</strong></li>
-									</div>
-								</ul>
-							</div>
-							<div class="utility-holder__right-side col-6">
-								<h5>Total</h5>
-								<ul>
-									<div class="if-holder" >
-										<li *ngFor = "let i of key.payments">{{i.amountPayment}}</li>
-										<div class="if-holder" *ngFor="let u of totalByMonth">
-											<li *ngIf="key.month===u.month"><strong>{{u.totalOfMonth}}</strong></li>
-										</div>
-									</div>
-								</ul>
-							</div>
-						</div>
-					</div>
-			  </div>
-		  </div>
-		</div>
+<section class="history-section">
+  <div class="container">
 
-		<ng-template  #newUserModalHelper>
-			<div class="modal-header">
-				<h4 class="modal-title">You haven't added any payments yet</h4>
-			</div>
-			<div class="modal-body text-center">
-				<span class="text-center">Do you want to add new payment?</span><br>
-				<button type="button" class="button" routerLink="/pay" (click)="modalRef.hide();">Yes</button>
-				<button type="button" class="button" (click)="modalRef.hide();">No</button>
-			</div>
-		</ng-template>
+    <div class="row mt-5 mb-4">
+      <div class="history-section-select col-12">
+        <select class="form-control form-control-md" [(ngModel)]="selectedYear" (change)='transformPayments();'>
+          <option *ngFor="let year of uniqueYears">{{year}}</option>
+        </select>
+      </div>
+    </div>
 
-	</div>
+    <div class="history-section-holder">
+      <div class="row">
+
+        <div class="col-lg-6 col-md-10 col-sm-12 mb-5 animated zoomIn mx-auto" *ngFor="let key of historyDisplay">
+          <div class="history-section-holder-utility">
+            <div class="row">
+
+              <div class="history-section-utility__card-title col-12">
+                <h3>{{ key.month | month }}</h3>
+              </div>
+
+              <div class="history-section-utility__left-side col-6">
+                <h5>Utilities</h5>
+                <ul>
+                  <li *ngFor = "let payment of key.payments">{{payment.utilityName}}</li>
+                  <li class="strong">All</li>
+                </ul>
+              </div>
+
+              <div class="history-section-utility__right-side col-6">
+                <h5 >Total</h5>
+                <ul>
+                  <li *ngFor = "let payment of key.payments">{{payment.amountPayment}}</li>
+                  <div class="if-holder" *ngFor="let total of totalByMonth">
+                    <li *ngIf="key.month===total.month" class="strong">{{total.totalOfMonth}}</li>
+                  </div>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+  </div>
 </section>
 
+<ng-template  #modalWindowIfPaymentsListEmpty>
+  <div class="modal-header">
+    <h4 class="modal-title">You haven't added any payments yet</h4>
+  </div>
+  <div class="modal-body text-center">
+    <span class="text-center">Do you want to add new payment?</span><br>
+    <button type="button" class="button" routerLink="/pay" (click)="modalRef.hide();">Yes</button>
+    <button type="button" class="button" (click)="modalRef.hide();">No</button>
+  </div>
+</ng-template>

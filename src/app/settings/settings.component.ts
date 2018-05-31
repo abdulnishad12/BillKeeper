@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit {
   validatorVariableCounter = false;
   validatorVariableTariff = false;
   validatorFixedTariff = false;
-  validatorNewUtility = false;
+  validatorNewUtility = [false, ''];
 
 
 
@@ -42,11 +42,11 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.getUtilities();
-    this.newUserModalHelper();
+    this.utilitiesArrayEmptyThanOpenModal();
   }
 
   // Open Help Window if there is no utilities in DB
-  newUserModalHelper() {
+  utilitiesArrayEmptyThanOpenModal() {
     this.utilityService.getUtilities().subscribe(data => {this.utilities = data;
       if (this.utilities.length === 0) {
         this.openModal(this.addNewUtilityModal);
@@ -102,15 +102,6 @@ export class SettingsComponent implements OnInit {
   deleteUtility(utilityId: number) {
     this.utilityService.deleteUtility(utilityId).subscribe();
     this.getUtilities();
-  }
-
-  // Show and hide Alert window
-
-  showAlert(alertName: string) {
-    document.getElementById(alertName).classList.remove('hide');
-    setInterval(function() {
-      document.getElementById(alertName).classList.add('hide');
-    }, 3000);
   }
 
   // Modal Window Activator

@@ -21,7 +21,7 @@ export class UtilityService {
   constructor(private http: HttpClient) { }
 
 
-  getUtilities() {
+  getUtilities(): Observable<Utility[]> {
     return this.http.get<Utility[]>(this.utilityUrl);
   }
 

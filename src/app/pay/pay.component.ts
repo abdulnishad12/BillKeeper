@@ -20,7 +20,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 export class PayComponent implements OnInit {
 
   // To have access to newUser Model from component
-  @ViewChild('newUserModalHelper') newUserModalHelper: any;
+  @ViewChild('modalWindowIfUtilitiesListEmpty') modalWindowIfUtilitiesListEmpty: any;
 
   modalRef: BsModalRef;
 
@@ -33,7 +33,7 @@ export class PayComponent implements OnInit {
 
   // Validation variable
   validatorVariablePaymentAmount = false;
-  validatorVariableCalculation = false;
+  validatorVariableCalculation = [ false , ''];
   validatorFixedPaymentAmount = false;
 
   currentYear = new Date().getFullYear();
@@ -47,34 +47,34 @@ export class PayComponent implements OnInit {
   ngOnInit() {
     this.getUtilities();
     this.getPayments();
-    this.newUserModalHelperMethod();
+    this.utilitiesArrayEmptyThanOpenModal();
   }
 
   // Show modal window helper for hew user, if db of utilities empty
-  newUserModalHelperMethod() {
+  utilitiesArrayEmptyThanOpenModal() {
     this.utilityService.getUtilities().subscribe(data => {this.utilities = data;
       if (this.utilities.length === 0) {
-        this.openModal(this.newUserModalHelper);
+        this.openModal(this.modalWindowIfUtilitiesListEmpty);
       }
     });
   }
   // Update payment amount of chose date and utility
   updatePayment(amountOfPayment: number, utility: string, selectedMonth: any) {
-    this.paymentService.updatePaymentInService(amountOfPayment, utility, selectedMonth);
+    this.paymentService.updatePayment(amountOfPayment, utility, selectedMonth);
   }
-
+  // Add payment of chose date and utility
   addPayment(amountOfPayment: number, utility: string, selectedMonth: any) {
-    this.paymentService.addPaymentInService(amountOfPayment, utility, selectedMonth);
+    this.paymentService.addPayment(amountOfPayment, utility, selectedMonth);
   }
 
   // Decide which model should open, for update or add payment
-   getPaymentInformation(amountOfPayment: number,
+  decideWhichConformationModalOpen(amountOfPayment: number,
                          utility: string,
                          selectedMonth: any,
                          confirmPayment: TemplateRef <any>,
                          confirmUpdate: TemplateRef <any>) {
-    this.paymentAmount = 0; // for display payment amount if it update modal
-    selectedMonth = this.paymentService.getMonthNumber(selectedMonth);
+    this.paymentAmount = 0; // for display payment amount in modal window, if it update modal
+    selectedMonth = this.paymentService.transformNameOfMonthToNumber(selectedMonth);
     this.paymentService.getPayments().subscribe(data => {this.payments = data;
       for ( const key of this.payments) {
         if (key.utilityName === utility && key.year === this.currentYear && key.month === selectedMonth) {
@@ -88,7 +88,7 @@ export class PayComponent implements OnInit {
 
 
   // Calculate payment amount
-  getCalculateInformation(currentCounter: any , utility: string) {
+  calculatePaymentAmount(currentCounter: any , utility: string) {
     this.totalCalculation = 0;
     this.selectedUtility = utility;
     for (const key of this.utilities) {
@@ -114,7 +114,7 @@ export class PayComponent implements OnInit {
     });
   }
 
-  getUtilities(): void {
+  getUtilities() {
     this.utilityService.getUtilities().subscribe(data => {this.utilities = data;
     });
   }
@@ -123,15 +123,6 @@ export class PayComponent implements OnInit {
 
   openModal(template: TemplateRef <any>) {
     this.modalRef = this.modalService.show(template, {class: 'modal-md'});
-  }
-
-  // Show Alert
-
-  showAlert(name: string) {
-    document.getElementById(name).classList.remove('hide');
-    setInterval(function() {
-      document.getElementById(name).classList.add('hide');
-    }, 3000);
   }
 
   // Form Validation Methods
@@ -149,7 +140,7 @@ export class PayComponent implements OnInit {
   formValidationVariableCalculation(counterForThisMonth: string, utility: string) {
     this.selectedUtility = utility;
     this.validatorVariableCalculation =
-      this.validationService.formValidationPreviousCounterLargerThanCurrent(
+      this.validationService.formValidationForCalculation(
         counterForThisMonth,
         utility,
         this.utilities);

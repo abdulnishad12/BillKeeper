@@ -4,12 +4,12 @@
 		<button class="button"  (click)="openModal(addNewUtilityModal)">Add Utility</button>
 	</div>
 
-	<div class="utility-tariffs">
+	<div class="utility-holder">
 		<div class="row">
 			<div class="col-12 col-lg-6 mb-5 animated zoomIn mx-auto" *ngFor="let utility of utilities;">
 				<!-- Variable Price Utility -->
-				<div class="utility-tariffs__item" *ngIf = "utility.fixedPaymentIndicator===false">
-					<div class="utility-tariffs__header">
+				<div class="utility-holder__item" *ngIf = "utility.fixedPaymentIndicator===false">
+					<div class="utility-holder__header">
 						<h3>{{utility.utilityName}}</h3>
 						<button type="button" (click)="openModal(confirmDeleteUtility)">
 							<span aria-hidden="true">&times;</span>
@@ -17,7 +17,7 @@
 					</div>
 
 					<div class="row">
-						<div class="utility-tariffs__input-holder col-12 col-sm-6 mb-2 mb-sm-0">
+						<div class="utility-holder__inputs col-12 col-sm-6 mb-2 mb-sm-0">
 
 							<input type="number" class="form-control"
 							(keyup) = "formValidationVariableCounter(utility.utilityName,counterAmount.value);"
@@ -37,37 +37,37 @@
 								Only five-digit positive number allowed
 							</div>
 						</div>
-						<div class="utility-tariffs__data-holder col-12 col-sm-6 mb-2 mb-sm-0">
-							<div class="utility-tariffs__data-holder--item">
+						<div class="utility-holder__data col-12 col-sm-6 mb-2 mb-sm-0">
+							<div class="utility-holder__data--item">
 								<p>Previous Counter: <span>{{utility.previousCounter}}</span></p>
 							</div>
-							<div class="utility-tariffs__data-holder--item">
+							<div class="utility-holder__data--item">
 								<p>Tariff: <span>{{utility.tariff}}</span></p>
 							</div>
 						</div>
 					</div>
 					<button type ="submit" class="button"
-					[ngClass]="{'cursor-off': validatorVariableTariff || validatorVariableCounter || counterAmount.value =='' || tariffAmount.value==''|| counterAmount.value==0 ||  tariffAmount.value==0 }"
+					[ngClass]="{'cursor-off': validatorVariableTariff || validatorVariableCounter || counterAmount.value =='' || tariffAmount.value==''||  tariffAmount.value==0 }"
 					(click) = "onSubmitNewTariff(utility.utilityName,utility.fixedPaymentIndicator,+counterAmount.value,+tariffAmount.value);tariffAmount.value='';counterAmount.value ='';">Submit</button>
 				</div>
 
 				<!-- Fixed Price Utility -->
-				<div class="utility-tariffs__item" *ngIf = "utility.fixedPaymentIndicator===true">
-					<div class="utility-tariffs__header">
+				<div class="utility-holder__item" *ngIf = "utility.fixedPaymentIndicator===true">
+					<div class="utility-holder__header">
 						<h3>{{utility.utilityName}}</h3>
 						<button type="button" (click)="openModal(confirmDeleteUtility)">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="row utility-tariffs-content ">
-						<div class="utility-tariffs__input-holder col-12 col-sm-6 mb-2 mb-sm-0">
+					<div class="row utility-holder-content ">
+						<div class="utility-holder__inputs col-12 col-sm-6 mb-2 mb-sm-0">
 							<input type="number" class="form-control" (keyup) = "formValidationFixed(utility.utilityName,tariffAmountFixed.value);" [ngClass]="{'invalid': validatorFixedTariff && selectedUtility === utility.utilityName }" placeholder="Fixed price" #tariffAmountFixed>
 							<div class="error" [ngClass]="{ 'show': validatorFixedTariff && selectedUtility===utility.utilityName,'hide': !(validatorFixedTariff && selectedUtility===utility.utilityName) }">
 								Only five-digit positive number allowed
 							</div>
 						</div>
-						<div class="utility-tariffs__data-holder col-12 col-sm-6 mb-2 mb-sm-0">
-							<div class="utility-tariffs__data-holder--item">
+						<div class="utility-holder__data col-12 col-sm-6 mb-2 mb-sm-0">
+							<div class="utility-holder__data--item">
 								<p>Fixed Amount: <span>{{utility.tariff}}</span></p>
 							</div>
 						</div>
@@ -81,8 +81,8 @@
 					</div>
 
 					<div class="modal-body text-center">
-						<p>Are you sure that you want to delete this utility:</p>
-						<p>{{utility.utilityName}}</p>
+						<p class="mb-3">Are you sure that you want to delete this utility:</p>
+						<p class="strong">{{utility.utilityName}}</p>
 						<button type="button" class="button" (click)="deleteUtility(utility.id);modalRef.hide();">Yes</button>
 						<button type="button" class="button" (click)="modalRef.hide();">No</button>
 					</div>
@@ -104,12 +104,12 @@
 			<div class="modal-body__header">
 				<span>Utility name:</span>
 
-				<input [ngClass]="{'invalid': validatorNewUtility}"
+				<input [ngClass]="{'invalid': validatorNewUtility[0]}"
 				placeholder="Enter utility Name"
 				[(ngModel)]="newUtilityName" (keyup) = "formValidationNewUtility(newUtilityName);">
 
-				<div class="error" [ngClass]="{ 'show': validatorNewUtility,'hide': !validatorNewUtility }">
-					<p>Only letter and dash allow</p>
+				<div class="error" [ngClass]="{ 'show': validatorNewUtility[0],'hide': !validatorNewUtility[0] }">
+					{{validatorNewUtility[1]}}
 				</div>
 			</div>
 			<div class="modal-body__inputs">
@@ -118,15 +118,10 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button class="button" [ngClass]="{'cursor-off': validatorNewUtility || newUtilityName =='' ||  newUtilityName==0 ||  newUtilityName==undefined }" (click) = "onSubmitNewUtility(newUtilityName,newUtilityFixedPriceCheckbox);showAlert('successAddNewUtility');newUtilityName = undefined;newFixedPrice = false;">Add</button>
+			<button class="button" [ngClass]="{'cursor-off': validatorNewUtility[0] || newUtilityName =='' ||  newUtilityName==0 ||  newUtilityName==undefined }" (click) = "onSubmitNewUtility(newUtilityName,newUtilityFixedPriceCheckbox);newUtilityName = undefined;newFixedPrice = false;">Add</button>
 		</div>
 	</ng-template>
 
-
-
-	<alert type="success animated fadeIn" class="hide" id="successAddNewUtility">
-		<strong>Success!</strong> You successfully add new utility <strong>{{newUtilityName}}</strong>.
-	</alert>
 
 
 

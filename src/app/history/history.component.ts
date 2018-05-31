@@ -25,31 +25,31 @@ export class HistoryComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  @ViewChild('newUserModalHelper') newUserModalHelper: any;
+  @ViewChild('modalWindowIfPaymentsListEmpty') modalWindowIfPaymentsListEmpty: any;
 
 
   constructor(private paymentService: PaymentService, private modalService: BsModalService) { }
 
   ngOnInit() {
     this.getPayments();
-    this.newUserModalHelperMethod();
-    this.getUniqueYears();
-    this.getPaymentsInformation();
+    this.paymentsArrayEmptyThanOpenModal();
+    this.transformPayments();
+    this.uniqueYears = this.paymentService.findUniqueYearsInPayments ();
   }
   // Show modal window if there is no payments in DB
-  newUserModalHelperMethod() {
+  paymentsArrayEmptyThanOpenModal() {
     this.paymentService.getPayments().subscribe(data => {this.payments = data;
       if (this.payments.length === 0) {
-        this.openModal(this.newUserModalHelper);
+        this.openModal(this.modalWindowIfPaymentsListEmpty);
       }
     });
   }
   // Get payment information for correct display on history page
-  getPaymentsInformation(): void {
-    this.paymentService.getPaymentsByYear(this.selectedYear).subscribe(data => {this.paymentsByYear = data;
-      // Get Unique Months from Payments for selected year
-      this.getUniqueMonths();
-      // Parse payments to make historyDisplay Array
+  transformPayments() {
+    // Update unique Months array
+    this.uniqueMonths = this.paymentService.findUniqueMonths(this.selectedYear);
+    // Parse payments array to transform in historyDisplay array
+    this.paymentService.getPaymentsForSelectedYear(this.selectedYear).subscribe(data => {this.paymentsByYear = data;
       let n = 0;
       this.historyDisplay = [];
       for (const key of this.uniqueMonths) {
@@ -61,49 +61,9 @@ export class HistoryComponent implements OnInit {
         }
          n += 1;
       }
-      // Find total of every month for selected year
-      this.totalOfEachMonth();
+      // Find total of every month in selectedYear
+      this.totalByMonth = this.paymentService.totalOfEachMonth();
     });
-  }
-
-  // Get Unique years from payments
-  // TODO
-  getUniqueYears() {
-    this.paymentService.getPayments().subscribe(data => {this.payments = data;
-      for (const i of this.payments) {
-        if (this.uniqueYears.indexOf(i.year) === -1) {
-          this.uniqueYears.push(i.year);
-        }
-      }
-      this.uniqueYears.sort(this.yearsOrder);
-    });
-    if (this.uniqueYears.length === 0 ) {
-      this.uniqueYears.push(this.selectedYear);
-    }
-  }
-  // Find unique Months from Payments for selected year
-  getUniqueMonths() {
-    this.uniqueMonths = [];
-    for (const key of this.paymentsByYear) {
-      if (this.uniqueMonths.indexOf(key.month) === -1) {
-        this.uniqueMonths.push(key.month);
-      }
-    }
-    this.uniqueMonths.sort(this.monthsOrder);
-  }
-  // Total for each month for selected Year
-  totalOfEachMonth() {
-    this.totalByMonth = [];
-    let totalMonth = 0;
-    for (const key of this.uniqueMonths) {
-      for (const i of this.paymentsByYear) {
-        if (key === i.month) {
-          totalMonth += i.amountPayment;
-        }
-      }
-      this.totalByMonth.push({month: key, totalOfMonth: totalMonth});
-      totalMonth = 0;
-    }
   }
 
   // get all Payments
@@ -116,16 +76,8 @@ export class HistoryComponent implements OnInit {
     this.modalRef = this.modalService.show(template, {class: 'modal-md'});
   }
 
-  // Sort years from biggest to littlest
-  yearsOrder(a, b) {
-    if (a > b) { return -1; }
-    if (a < b) { return 1; }
-  }
-  // Sort months from 0 to 11
-  monthsOrder(a, b) {
-    if (a > b) { return 1; }
-    if (a < b) { return -1; }
-  }
+
+
 
 
 }

@@ -14,7 +14,6 @@ export class InMemoryDataService implements InMemoryDbService {
       { id: 10, utilityName: 'Light', year: 2013, month: 7, amountPayment: 1250, },
       { id: 11, utilityName: 'Water', year: 2018, month: 5, amountPayment: 1350, },
       { id: 12, utilityName: 'Gas', year: 2018, month: 5, amountPayment: 1350, },
-      { id: 13, utilityName: 'Trash', year: 2018, month: 5, amountPayment: 1350 },
     ];
 
     const utilities = [
