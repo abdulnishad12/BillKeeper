@@ -37,7 +37,7 @@ export class HistoryComponent implements OnInit {
     this.uniqueYears = this.paymentService.findUniqueYearsInPayments ();
   }
   // Show modal window if there is no payments in DB
-  paymentsArrayEmptyThanOpenModal() {
+  paymentsArrayEmptyThanOpenModal(): void {
     this.paymentService.getPayments().subscribe(data => {this.payments = data;
       if (this.payments.length === 0) {
         this.openModal(this.modalWindowIfPaymentsListEmpty);
@@ -67,12 +67,12 @@ export class HistoryComponent implements OnInit {
   }
 
   // get all Payments
-  getPayments() {
+  getPayments(): void {
     this.paymentService.getPayments().subscribe(data => this.payments = data);
   }
 
   // Open modal window
-  openModal(template: TemplateRef <any>) {
+  openModal(template: TemplateRef <any>): void {
     this.modalRef = this.modalService.show(template, {class: 'modal-md'});
   }
 
