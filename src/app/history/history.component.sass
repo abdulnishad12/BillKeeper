@@ -1,11 +1,17 @@
+@import ../app.component
+
 .history-section
   .container
     .history-section-select
       text-align: center
-      select
+      .form-control
         font-size: 1.1rem
         width: 200px
         text-align: left
+        // Delete arrow in select box in FireFox
+        -moz-appearance: none
+        text-indent: 0.01px
+        text-overflow: ''
   .history-section-holder
     .history-section-holder-utility
       overflow: auto
@@ -15,59 +21,56 @@
       background-color: #fff
       padding: 20px 60px
       box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2)
-      h5
-        color: darken(#D7DADC,20%)
-        font-size: 24px
+      .utility-card-title__header
+        color: darken($headerFontColor,20%)
+        font-size: 2rem
         text-align: left
         margin-bottom: 15px
-      &:hover
-        transition: all 0.4s ease
-        transform: scale(1.03)
-        background-color: lighten(#719DCA,15%)
-        h3,p,h5
-          transition: all 0.4s ease
-          color: #fff !important
-      .history-section-utility__left-side,.history-section-utility__right-side
-        ul
-          list-style-type: none
-          margin-top: 20px
-          li
-            font-size: 1.1rem
-            text-align: left
-            margin-left: 40px
-            margin-bottom: 20px
-          li.strong
-            font-weight: 700
-    .history-section-utility__card-title
-      h3
         text-align: left
         font-size: 35px
         margin-bottom: 25px
         padding-bottom: 10px
         color: darken(#D7DADC,20%)
         border-bottom: 1px solid #719DCA
+      .utility-card-right-side__header,.utility-card-left-side__header
+        font-size: 1.2rem
+      &:hover
+        transition: all 0.4s ease
+        transform: scale(1.03)
+        background-color: lighten($accentColor,15%)
+        .utility-card-left-side__header,.utility-card-right-side__header,.utility-card-title__header
+          transition: all 0.4s ease
+          color: #fff 
+
+      .history-section-utility__left-side,.history-section-utility__right-side
+        .utilities-name-list,.totals-list
+          list-style-type: none
+          margin-top: 20px
+          .utilities-name-list__item,.totals-list__item
+            font-size: 1.1rem
+            text-align: left
+            margin-left: 40px
+            margin-bottom: 20px
 		.history-section-utility__left-side
 			border-right: 1px solid #719DCA
 			height: 100%
 
 
-.modal-modal-header
-  h4
-    font-size: 25px
-
+.modal-title
+  font-size: 20px
 .modal-body
 	padding: 10px 20px
-	margin: 20px 0 10px 0
-	button
+	margin: 20px 0 10px 0 
+	.modal-button
 		margin: 50px 10px 0 10px
 		width: 120px
 		&:hover
 			width: 120px
+.modal-body-text
+  font-size: 18px
 
 @media only screen and (max-width : 520px)
   .history-section-holder-utility
-    padding: 15px 30px !important
-    h3
-      font-size: 25px !important
-    h5
-      font-size: 20px !important
+    padding: 15px 30px
+    .utility-card-title__header,.utility-card-left-side__header,.utility-card-right-side__header
+      font-size: 25px 

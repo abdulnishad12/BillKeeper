@@ -59,7 +59,7 @@ export class HistoryComponent implements OnInit {
             this.historyDisplay[n].payments.push({utilityName: i.utilityName, amountPayment: i.amountPayment});
           }
         }
-         n += 1;
+         n++;
       }
       // Find total of every month in selectedYear
       this.totalByMonth = this.paymentService.totalOfEachMonth();

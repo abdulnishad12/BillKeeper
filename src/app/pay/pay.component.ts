@@ -31,11 +31,10 @@ export class PayComponent implements OnInit {
   paymentAmount: number;
   totalCalculation = 0;
 
-  // Validation variable
-  validatorVariablePaymentAmount = false;
-  // first variable validation indicator, second is a message of witch validation have not complete
+  // Validation variable first variable validation indicator, second is a message of witch validation have not complete
+  validatorVariablePaymentAmount = [ false , ''];
   validatorVariableCalculation = [ false , ''];
-  validatorFixedPaymentAmount = false;
+  validatorFixedPaymentAmount = [ false , ''];
 
   currentYear = new Date().getFullYear();
   currentMonth = new Date().getMonth();
@@ -147,6 +146,17 @@ export class PayComponent implements OnInit {
         this.utilities);
   }
 
+  appliesValidationErrorToSelectedUtility(validationIndicator: any, utility: string ): boolean {
+    return validationIndicator && this.selectedUtility === utility;
+  }
+
+  disableButtonOnFailedValidation(validationIndicator: any, inputValue: string): boolean {
+    return validationIndicator || inputValue === '' ||  +inputValue === 0;
+  }
+
+  setAmountOfPaymentValueAfterCalculation(utility: string): boolean {
+    return this.totalCalculation !== 0 && this.selectedUtility === utility;
+  }
 
 
 

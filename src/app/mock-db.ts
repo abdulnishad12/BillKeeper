@@ -20,8 +20,7 @@ export class InMemoryDataService implements InMemoryDbService {
       { id: 1, utilityName: 'Gas', tariff: 3.2, previousCounter: 50, fixedPaymentIndicator: false},
       { id: 2, utilityName: 'Electricity', tariff: 2.3, previousCounter: 25, fixedPaymentIndicator: false},
       { id: 3, utilityName: 'Water', tariff: 1.2, previousCounter: 32, fixedPaymentIndicator: false},
-      { id: 4, utilityName: 'Trash', tariff: 300
-        , previousCounter: 0, fixedPaymentIndicator: true},
+      { id: 4, utilityName: 'Trash', tariff: 30, previousCounter: 0, fixedPaymentIndicator: true},
     ];
   return {payments, utilities};
   }

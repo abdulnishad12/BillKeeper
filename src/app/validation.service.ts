@@ -14,13 +14,21 @@ export class ValidationService {
   constructor() {}
 
   // Validation: length less than maxLengthOfInput and only positive number
-  formValidationLengthAndPositive(validateInput: string) {
-    return validateInput.length > this.maxLengthOfInput || +validateInput < 0;
+  formValidationLengthAndPositive(validateInput: string): any {
+    if (+validateInput < 0 || !/(0|[1-9][0-9]*)$/.test(validateInput)) {
+      const message1 = 'Only positive number allowed';
+      return [true, message1];
+    }
+    if (validateInput.length > this.maxLengthOfInput) {
+      const message2 = 'Only five-digit number allowed';
+      return [true, message2];
+    }
+    return [false, ''];
   }
   // Validation: unique utility value and only chars
-  formValidationUniqueAndOnlyChars(validateInput: string, utilitiesArray: Utility[]) {
+  formValidationUniqueAndOnlyChars(validateInput: string, utilitiesArray: Utility[]): any {
     if (!/^[A-Za-z].*$/.test(validateInput)) {
-      const message1 = 'Only letters allow';
+      const message1 = 'First symbol must be char';
       return [true, message1];
     }
     for (const key of utilitiesArray) {
@@ -29,23 +37,25 @@ export class ValidationService {
         return [true, message2];
       }
     }
-    const message3 = '';
-    return [false, message3];
+    return [false, ''];
   }
   /* Validation: length less than maxLengthOfInput and only positive number
   * Current counter value larger that previous counter value
    */
-  formValidationForCalculation(validateInput: string, compareUtilityName: string, utilitiesArray: Utility[]) {
+  formValidationForCalculation(validateInput: string, compareUtilityName: string, utilitiesArray: Utility[]): any {
     if (validateInput.length > this.maxLengthOfInput || +validateInput < 0) {
       const message1 = 'Only five-digit positive number allowed';
       return [true, message1];
+    }
+    if (+validateInput < 0 || !/(0|[1-9][0-9]*)$/.test(validateInput)) {
+      const message4 = 'Only numbers allow';
+      return [true, message4];
     }
     for (const key of utilitiesArray) {
       if (compareUtilityName === key.utilityName) {
         if (+validateInput !== key.previousCounter && +validateInput > key.previousCounter) {
           if ( key.tariff !== 0 ) {
-            const message4 = '';
-            return [false, message4];
+            return [false, ''];
           }
           const message2 = 'Tariff cant be equal 0';
           return [true, message2];
@@ -55,8 +65,6 @@ export class ValidationService {
       }
     }
   }
-
-
 
 
 

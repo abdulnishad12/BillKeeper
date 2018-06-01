@@ -23,11 +23,11 @@ export class SettingsComponent implements OnInit {
   selectedUtility: string;
   newUtilityFixedPriceCheckbox = false;
 
-  // Validation variable
-  validatorVariableCounter = false;
-  validatorVariableTariff = false;
-  validatorFixedTariff = false;
-  validatorNewUtility = [false, '']; // first variable validation indicator, second is a message of witch validation have not complete
+  // Validation variable first variable validation indicator, second is a message of witch validation have not complete
+  validatorVariableCounter = [false, ''];
+  validatorVariableTariff = [false, ''];
+  validatorFixedTariff = [false, ''];
+  validatorNewUtility = [false, ''];
 
 
 
@@ -129,6 +129,14 @@ export class SettingsComponent implements OnInit {
 
   formValidationNewUtility(newUtilityName: string) {
    this.validatorNewUtility = this.validationService.formValidationUniqueAndOnlyChars(newUtilityName, this.utilities);
+  }
+
+  appliesValidationErrorToSelectedUtility(validationIndicator: any, utility: string ): boolean {
+    return validationIndicator && this.selectedUtility === utility;
+  }
+
+  disableButtonOnFailedValidation(validationIndicator: any, inputValueFirst: string, inputValueSecond: string): boolean {
+    return validationIndicator || inputValueFirst === '' ||  +inputValueFirst === 0 || inputValueSecond === '' ||  +inputValueSecond === 0;
   }
 
 

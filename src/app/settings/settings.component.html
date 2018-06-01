@@ -1,57 +1,55 @@
 <div class="container">
-
 	<div class="add-new-utility-holder">
 		<button class="button"  (click)="openModal(addNewUtilityModal)">Add Utility</button>
 	</div>
 
-	<div class="utility-holder">
+	<div class="utility-holder mt-4">
 		<div class="row">
 			<div class="col-12 col-lg-6 mb-5 animated zoomIn mx-auto" *ngFor="let utility of utilities;">
 				<!-- Variable Price Utility -->
 				<div class="utility-holder__item" *ngIf = "utility.fixedPaymentIndicator===false">
 					<div class="utility-holder__header">
-						<h3>{{utility.utilityName}}</h3>
-						<button type="button" (click)="openModal(confirmDeleteUtility)">
-							<span aria-hidden="true">&times;</span>
+						<h3 class="utility-holder-header__utility-name">{{utility.utilityName}}</h3>
+						<button type="button" class="delete-button" (click)="openModal(confirmDeleteUtility)">
+							<span class="delete-button-icon" aria-hidden="true">&times;</span>
 						</button>
 					</div>
 
 					<div class="row">
 						<div class="utility-holder__inputs col-12 col-sm-6 mb-2 mb-sm-0">
 
-							<input type="number" class="form-control"
+							<input type="number" class="form-control variable-counter-input"
 							(keyup) = "formValidationVariableCounter(utility.utilityName,counterAmount.value);"
-							[ngClass]="{'invalid': validatorVariableCounter && selectedUtility===utility.utilityName }"
+							[ngClass]="{'invalid': appliesValidationErrorToSelectedUtility(validatorVariableCounter[0],utility.utilityName)}"
 							placeholder="Previous Counter" #counterAmount>
 
-							<div class="error"  [ngClass]="{ 'show': validatorVariableCounter && selectedUtility===utility.utilityName,
-							'hide': !(validatorVariableCounter && selectedUtility===utility.utilityName) }">
-								Only five-digit positive number allowed
+							<div class="error"  [ngClass]="{ 'show': appliesValidationErrorToSelectedUtility(validatorVariableCounter[0],utility.utilityName),
+							'hide': !(appliesValidationErrorToSelectedUtility(validatorVariableCounter[0],utility.utilityName)) }">
+								{{validatorVariableCounter[1]}}
 							</div>
 
-							<input type="number" class="form-control"
+							<input type="number" class="form-control variable-tariff-input"
 							(keyup) = "formValidationVariableTariff(utility.utilityName,tariffAmount.value);"
-							[ngClass]="{'invalid': validatorVariableTariff && selectedUtility===utility.utilityName }"
+							[ngClass]="{'invalid': appliesValidationErrorToSelectedUtility(validatorVariableTariff[0],utility.utilityName)}"
 							placeholder="Utility tariff" #tariffAmount>
 
-							<div class="error" [ngClass]="{ 'show': validatorVariableTariff && selectedUtility===utility.utilityName,
-							'hide': !(validatorVariableTariff && selectedUtility===utility.utilityName) }">
-								Only five-digit positive number allowed
+							<div class="error" [ngClass]="{ 'show': appliesValidationErrorToSelectedUtility(validatorVariableTariff[0],utility.utilityName),
+							'hide': !(appliesValidationErrorToSelectedUtility(validatorVariableTariff[0],utility.utilityName)) }">
+                {{validatorVariableTariff[1]}}
 							</div>
 						</div>
 						<div class="utility-holder__data col-12 col-sm-6 mb-2 mb-sm-0">
-							<div class="utility-holder__data--item">
-								<p>Previous Counter: <span>{{utility.previousCounter}}</span></p>
+							<div class="utility-holder-data__item">
+								<p class="utility-holder-data__text">Previous Counter: <span class="utility-holder-data__text--inner">{{utility.previousCounter}}</span></p>
 							</div>
-							<div class="utility-holder__data--item">
-								<p>Tariff: <span>{{utility.tariff}}</span></p>
+							<div class="utility-holder-data__item">
+								<p class="utility-holder-data__text">Tariff: <span class="utility-holder-data__text--inner">{{utility.tariff}}</span></p>
 							</div>
 						</div>
 					</div>
 
-					<button type ="submit" class="button"
-					[ngClass]="{'cursor-off': validatorVariableTariff || validatorVariableCounter
-					|| counterAmount.value =='' || tariffAmount.value==''||  tariffAmount.value==0 }"
+					<button type ="submit" class="button add-tariff-button"
+					[ngClass]="{'cursor-off': disableButtonOnFailedValidation(validatorVariableTariff[0],tariffAmount.value,counterAmount.value)}"
 					(click) = "onSubmitNewTariff(utility.utilityName,
 					utility.fixedPaymentIndicator,
 					+counterAmount.value,
@@ -62,33 +60,32 @@
 				<!-- Fixed Price Utility -->
 				<div class="utility-holder__item" *ngIf = "utility.fixedPaymentIndicator===true">
 					<div class="utility-holder__header">
-						<h3>{{utility.utilityName}}</h3>
-						<button type="button" (click)="openModal(confirmDeleteUtility)">
-							<span aria-hidden="true">&times;</span>
+						<h3 class="utility-holder-header__utility-name">{{utility.utilityName}}</h3>
+						<button type="button" class="delete-button" (click)="openModal(confirmDeleteUtility)">
+							<span aria-hidden="true" class="delete-button-icon">&times;</span>
 						</button>
 					</div>
 					<div class="row utility-holder-content ">
 						<div class="utility-holder__inputs col-12 col-sm-6 mb-2 mb-sm-0">
 
-							<input type="number" class="form-control"
+							<input type="number" class="form-control variable-tariff-input"
                      (keyup) = "formValidationFixed(utility.utilityName,tariffAmountFixed.value);"
-                     [ngClass]="{'invalid': validatorFixedTariff && selectedUtility === utility.utilityName }"
+                     [ngClass]="{'invalid': appliesValidationErrorToSelectedUtility(validatorFixedTariff[0],utility.utilityName)}"
                      placeholder="Fixed price" #tariffAmountFixed>
 
-							<div class="error" [ngClass]="{ 'show': validatorFixedTariff && selectedUtility===utility.utilityName,
-							'hide': !(validatorFixedTariff && selectedUtility===utility.utilityName) }">
-								Only five-digit positive number allowed
+							<div class="error" [ngClass]="{ 'show': appliesValidationErrorToSelectedUtility(validatorFixedTariff[0],utility.utilityName),
+							'hide': !(appliesValidationErrorToSelectedUtility(validatorFixedTariff[0],utility.utilityName)) }">
+                {{validatorFixedTariff[1]}}
 							</div>
 						</div>
 						<div class="utility-holder__data col-12 col-sm-6 mb-2 mb-sm-0">
-							<div class="utility-holder__data--item">
-								<p>Fixed Amount: <span>{{utility.tariff}}</span></p>
+							<div class="utility-holder-data__item">
+								<p class="utility-holder-data__text">Fixed Amount: <span class="utility-holder-data__text--inner">{{utility.tariff}}</span></p>
 							</div>
 						</div>
 					</div>
 
-					<button class="button" [ngClass]="{'cursor-off': validatorFixedTariff ||
-					tariffAmountFixed.value =='' ||  tariffAmountFixed.value==0 }"
+					<button class="button add-tariff-button" [ngClass]="{'cursor-off': disableButtonOnFailedValidation(validatorFixedTariff[0],tariffAmountFixed.value,'1')}"
                   (click) = "onSubmitNewTariff(utility.utilityName,
                   utility.fixedPaymentIndicator,
                   previousCounter?.value,
@@ -103,8 +100,8 @@
 					<div class="modal-body text-center">
 						<p class="mb-3">Are you sure that you want to delete this utility:</p>
 						<p class="strong">{{utility.utilityName}}</p>
-						<button type="button" class="button" (click)="deleteUtility(utility.id);modalRef.hide();">Yes</button>
-						<button type="button" class="button" (click)="modalRef.hide();">No</button>
+						<button type="button" class="button delete-comfirmation-button" (click)="deleteUtility(utility.id);modalRef.hide();">Yes</button>
+						<button type="button" class="button delete-comfirmation-button" (click)="modalRef.hide();">No</button>
 					</div>
 				</ng-template>
 
@@ -116,7 +113,7 @@
 	<ng-template #addNewUtilityModal>
 		<div class="modal-header">
 			<h4 class="modal-title pull-left">Add new utility</h4>
-			<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide();">
+			<button type="button delete-button" class="close pull-right" aria-label="Close" (click)="modalRef.hide();">
 				<span aria-hidden="true">&times;</span>
 			</button>
 		</div>
@@ -124,7 +121,7 @@
 			<div class="modal-body__header">
 				<span>Utility name:</span>
 
-				<input [ngClass]="{'invalid': validatorNewUtility[0]}"
+				<input class="newUtilityName-input" [ngClass]="{'invalid': validatorNewUtility[0]}"
 				placeholder="Enter utility Name"
 				[(ngModel)]="newUtilityName" (keyup) = "formValidationNewUtility(newUtilityName);">
 
@@ -133,15 +130,13 @@
 				</div>
 			</div>
 			<div class="modal-body__inputs">
-				<input  type="checkbox" id="checkbox_id" [(ngModel)]="newUtilityFixedPriceCheckbox">
+				<input class="newUtility-checkbox"  type="checkbox" id="checkbox_id" [(ngModel)]="newUtilityFixedPriceCheckbox">
 				<label for="checkbox_id">Is it suppose to be fixed payment?</label>
 			</div>
 		</div>
 		<div class="modal-footer">
 			<button class="button"
-              [ngClass]="{'cursor-off': validatorNewUtility[0] ||
-              newUtilityName =='' ||  newUtilityName==0 ||
-              newUtilityName==undefined }"
+              [ngClass]="{'cursor-off': disableButtonOnFailedValidation(validatorNewUtility[0],newUtilityName,'1')}"
               (click) = "onSubmitNewUtility(newUtilityName,newUtilityFixedPriceCheckbox);
               newUtilityName = undefined;newFixedPrice = false;">Add</button>
 		</div>

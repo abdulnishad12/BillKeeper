@@ -1,4 +1,10 @@
-/* Reset Css */
+@import variables
+
+
+
+
+//Reset Css
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -18,34 +24,24 @@ time, mark, audio, video
   font-size: 100%
   font: inherit
   vertical-align: baseline
-
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section
   display: block
-
 body
   line-height: 1
-  background-color: #E8EDF3
-  font-size: 17px
-
+  font-size: 16px
 ol, ul
   list-style: none
-
 blockquote, q
   quotes: none
-
 blockquote:before, blockquote:after,
 q:before, q:after
   content: ''
   content: none
-
 table
   border-collapse: collapse
   border-spacing: 0
-
-
-
 
 
 .button
@@ -55,7 +51,7 @@ table
 	border: none
 	color: #fff
 	text-decoration: none
-	background-color: #FEB941
+	background-color: $detailColor
 	padding: 9px 12px
 	font-size: 13px
 	text-transform: uppercase
@@ -71,36 +67,18 @@ table
   transition: 0.5s
 	&:hover
 		outline: none
-		background-color: darken(#FEB941,10%)
+		background-color: darken($detailColor,10%)
 		transition: background-color 0.5s ease
 		transition: width 0.8s ease
 		width: 166px
 	&:active
 		outline: none
-		background-color: lighten(#FEB941,7%)
+		background-color: lighten($detailColor,7%)
 		transition: background-color 0.5s ease
 
-
-input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button
-  -webkit-appearance: none
-  margin: 0
-
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button
-  -webkit-appearance: none
-  margin: 0
-
-input[type=number]
-  -moz-appearance: textfield
-
-select
-  -moz-appearance: none
-  text-indent: 0.01px
-  text-overflow: ''
-
-input.invalid
-	border: 1px solid red !important
-	border-radius: 3px !important
+.invalid
+	border: 1px solid red !important // To get over BootStrap Class
+	border-radius: 3px
 
 .error
   position: absolute
@@ -120,13 +98,13 @@ input.invalid
 .cursor-off
 	pointer-events: none
 
-alert
-	position: fixed
-	width: 600px
-	left: 50%
-	transform: translateX(-50%)
-	top: 65px
-	text-align: center
-
 .strong
   font-weight: 700
+
+  // Remove arrow from number field
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+  -webkit-appearance: none
+  margin: 0
+input[type="number"]
+  -moz-appearance: textfield

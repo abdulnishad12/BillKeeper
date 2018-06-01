@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Payment} from './payment';
+import { Payment } from './payment';
 
 const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' })};
 
@@ -76,7 +76,7 @@ export class PaymentService {
   }
 
   // Transform Month from name to number
-  transformNameOfMonthToNumber(selectedMonth: any) {
+  transformNameOfMonthToNumber(selectedMonth: any): number {
     let monthNumber = 0;
     const months = [
       ' ',

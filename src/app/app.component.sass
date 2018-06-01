@@ -1,8 +1,8 @@
+@import ../variables
+
 .navbar
-	padding: 10px 0px
-	background-color: #719DCA
-	a
-		color: #fff
+	padding: 10px 0
+	background-color: $accentColor
 	.navbar-brand
 		font-family: 'Pacifico', cursive
 		font-size: 24px
@@ -11,18 +11,19 @@
 			border-right: 1px solid #fff
 			padding: 0 15px
 			font-size: 16px
+			color: #fff
 			&:nth-child(3)
 				border: none
 			&:hover
-				color: lighten(#FEB941,10%)
+				color: lighten($detailColor,10%)
 				transition: color 0.3s ease
 			&:active
-				color: darken(#FEB941,10%)
+				color: darken($detailColor,10%)
 				transition: color 0.3s ease
+		.active-link
+			color: darken($detailColor,5%)
+			transition: color 0.3s ease
 
-.active-link
-	color: darken(#FEB941,5%) !important
-	transition: color 0.3s ease
 
 @media only screen and (max-width : 992px)
   .navbar

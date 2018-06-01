@@ -1,9 +1,15 @@
+@import ../app.component
+
 .pay-section
 	margin-top: 70px
 	position: relative
 	.pay-section-holder
 		display: inline-block
 		.utility-holder
+			.card-title
+				font-size: 32px
+				color: darken($headerFontColor,20%)
+				margin: 0
 			min-height: 300px
       width: 100%
 			text-align: center
@@ -15,81 +21,62 @@
 			&:hover
 				transition: all 0.4s ease
 				transform: scale(1.03)
-				background-color: lighten(#719DCA,15%)
-				.utility-holder-header
-					h3
-						color: #fff !important
-				h3,p,h5
+				background-color: lighten($accentColor,15%)
+				.card-title
+					color: #fff
+				.datepicker__year,.utility-holder-content__header,.total-holder-sign
 					transition: all 0.4s ease
 					color: #fff
 			.datepicker
 				height: 55px
 				margin-top: 20px
-				select
+				.month-datepicker
 					display: inline-block
 					width: 100px
 					height: 35px
 					padding: 3px 0 3px 15px
-				input
-					display: inline-block
-					margin-left: 15px
-				p
+				.datepicker__year
 					font-size: 18px
 					display: inline-block
 					margin-right: 15px
 
 			.utility-holder-header
-				border-bottom: 1px solid #719DCA
+				border-bottom: 1px solid $accentColor
 				padding-bottom: 10px
 				display: flex
 				justify-content: space-between
 				align-items: center
 				width: 100%
 				margin-bottom: 25px
-				border-bottom: 1px solid #719DCA
-				button
-					outline: none
-					position: absolute
-					top: 0
-					right: 15px
-					background-color: transparent
-					border: none
-					cursor: pointer
-					height: 15px
-					width: 25px
-					span
-						font-size: 30px
-				h3
-					font-size: 32px
-					color: darken(#D7DADC,20%)!important
-					margin: 0
-			h5
-				color: darken(#D7DADC,20%)
+				border-bottom: 1px solid $accentColor
+			.utility-holder-content__header
+				color: darken($headerFontColor,20%)
 				font-size: 24px
-			input
+			.variablePaymentInput,.calculationInput,.fixedPriceInput
 				padding: 4px 10px
 				width: 100%
 				margin-top: 15px
 				outline: none
 			.total-holder
 				height: 50px
-				color: darken(#D7DADC,20%)
+				color: darken($headerFontColor,20%)
 				display: flex
 				justify-content: space-between
 				padding: 0 70px
 				margin-top: 25px
-				span
+				font-size: 18px
+				.total-holder-amount
 					color: #000
-				p
+				.total-holder-sign
 					margin: 0
 			.utility-holder__left-side
-				border-right: 1px solid #719DCA
+				border-right: 1px solid $accentColor
 
 		.utility-holder--fixed
 			.utility-holder-content__left-side
 				text-align: center
 				border-right: none
-				input
+				.fixedPriceInput
 					margin: 15px auto 0 auto
 					width: 50%
 
@@ -101,17 +88,20 @@
   padding: 15px 35px
   margin: 15px 0 10px 0
   display: block
-  h6
+  .modal-body-text,.modal-footer-text
     font-weight: bold
     margin-bottom: 20px
+    font-size: 18px
   .detail-item
     padding: 0 40px
-    p
+    font-size: 17px
+    .detail-item-data
       display: inline-block
       width: 100%
       text-align: right
       margin-bottom: 7px
-  button
+      font-size: 16px
+  .modal-button,.modal-new-user-button
     margin: 30px 10px 0 10px
     width: 120px
     &:hover
@@ -121,26 +111,30 @@
   padding-top: 30px
   margin-top: 0
 .modal-header
-  h4
-    font-size: 23px !important
+  .modal-title
+    font-size: 23px
 
 @media only screen and (max-width : 768px)
   .utility-holder
     .total-holder
-      padding: 0 40% !important
+      padding: 0 40%
 
 @media only screen and (max-width : 572px)
   .utility-holder
-    .total-holder
-      padding: 0 40% !important
     .utility-holder-content
-      input
-        width: 300px !important
-        margin: 0 auto
+      .utility-holder-content__right-side
+        .total-holder
+          padding: 0 40%
+      .utility-holder-content__left-side,.utility-holder-content__right-side
+        .variablePaymentInput,.calculationInput,.fixedPriceInput
+          width: 300px
+          margin: 0 auto
 
 @media only screen and (max-width : 400px)
-  .utility-holder
-    .utility-holder-content
-      input
-        width: 200px !important
-        margin: 0 auto
+  .pay-section-holder
+    .utility-holder
+      .utility-holder-content
+        .utility-holder-content__left-side,.utility-holder-content__right-side
+          .variablePaymentInput,.calculationInput,.fixedPriceInput
+            width: 200px
+            margin: 20px auto 0 auto
